@@ -1,5 +1,6 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
+import "firebase/auth";
 const firebaseConfig = {
   apiKey: "AIzaSyCUy5MzaUTVHRp7-xdkfMDerchD96O18SI",
   authDomain: "updownpv.firebaseapp.com",
@@ -12,7 +13,10 @@ const firebaseConfig = {
 };
 
 // Get a Firestore instance
-export const db = firebase.initializeApp(firebaseConfig).firestore();
+const firebaseInstance = firebase.initializeApp(firebaseConfig);
+export const db = firebaseInstance.firestore();
+export const auth = firebaseInstance.auth();
+export const gAuth = firebase.auth.GoogleAuthProvider;
 
 // Export types that exists in Firestore
 // This is not always necessary, but it's used in other examples

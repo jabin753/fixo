@@ -1,5 +1,5 @@
 <template>
-  <p>CHAT</p>
+  <v-container> </v-container>
 </template>
 
 <script>

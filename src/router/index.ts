@@ -1,32 +1,41 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
 import App from "@/App.vue";
-import Repair from "@/views/Repair.vue";
-import Chat from "@/views/Chat.vue";
-import Config from "@/views/Configs.vue";
 
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
   {
-    path: "/",
-    redirect: "/repair",
+    path: "",
     component: App,
     children: [
+      { path: "", redirect: "login" },
       {
-        path: "/repair",
-        name: "RepairMenu",
-        component: Repair
+        path: "login",
+        component: () => import("@/views/Login.vue")
       },
       {
-        path: "/chat",
-        name: "ChatMenu",
-        component: Chat
-      },
-      {
-        path: "/config",
-        name: "ConfigMenu",
-        component: Config
+        path: "app",
+        component: () => import("@/views/MainLayout.vue"),
+        children: [
+          {
+            path: "",
+            redirect: "repair"
+          },
+          {
+            path: "repair",
+            component: () => import("@/views/Repair.vue")
+          },
+          {
+            path: "repair/:id",
+            component: () => import("@/views/RepairDetails.vue")
+          },
+          { path: "chat", component: () => import("@/views/Chat.vue") },
+          {
+            path: "config",
+            component: () => import("@/views/Configs.vue")
+          }
+        ]
       }
     ]
   }
