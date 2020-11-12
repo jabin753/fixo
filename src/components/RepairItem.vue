@@ -1,15 +1,32 @@
 <template>
-  <v-card>
+  <v-card
+  ripple
+  >
     <v-card-title class="subheading font-weight-bold">
-      {{ item.name }}
-    </v-card-title>
-    <v-divider></v-divider>
+      {{ item.name }} - {{item.deviceType}}
+    </v-card-title> 
+
+  
 
     <v-list dense>
       <v-list-item>
+        <v-list-item-content>Recepción:</v-list-item-content>
+        <v-list-item-content >
+          {{ item.receiptDate }}
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-list-item>
         <v-list-item-content>Detalles:</v-list-item-content>
-        <v-list-item-content class="align-end">
+        <v-list-item-content >
           {{ item.details }}
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-list-item>
+        <v-list-item-content>Teléfono:</v-list-item-content>
+        <v-list-item-content class="align-end">
+          {{ item.phone }}
         </v-list-item-content>
       </v-list-item>
     </v-list>
@@ -22,9 +39,6 @@ import Component from "vue-class-component";
 import { Reparacion } from "@/types";
 @Component<RepairItem>({
   name: "RepairItem",
-  mounted() {
-    console.log(this.$props.item);
-  },
   props: {
     item: {
       type: Object,

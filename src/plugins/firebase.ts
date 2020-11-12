@@ -16,6 +16,7 @@ const firebaseConfig = {
 const firebaseInstance = firebase.initializeApp(firebaseConfig);
 export const db = firebaseInstance.firestore();
 export const auth = firebaseInstance.auth();
+export type CollectionReference<T> = firebase.firestore.CollectionReference<T>
 export const gAuth = firebase.auth.GoogleAuthProvider;
 
 // Export types that exists in Firestore

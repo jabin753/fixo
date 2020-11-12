@@ -5,6 +5,6 @@ export interface Reparacion {
   details: string;
   isReviewed: boolean;
   tags: string[];
-  receiptDate: Record<string, any>;
-  deliveredDate?: Record<string, any>;
+  receiptDate: string;
+  deliveredDate?: string;
 }
