@@ -19,16 +19,16 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
+import Vue from 'vue'
+import Component from 'vue-class-component'
 @Component({
-  name: "MainLayout"
+  name: 'MainLayout'
 })
 export default class MainLayout extends Vue {
   links = [
-    { name: "Reparaciones", to: "/app/repair" },
-    { name: "Chat", to: "/app/chat" },
-    { name: "Configuración", to: "/app/config" }
-  ];
+    { name: 'Reparaciones', to: '/app/repair' },
+    { name: 'Chat', to: '/app/chat' },
+    { name: 'Configuración', to: '/app/config' }
+  ]
 }
 </script>

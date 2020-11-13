@@ -1,24 +1,20 @@
 <template>
-  <v-card
-  ripple
-  >
-    <v-card-title class="subheading font-weight-bold">
-      {{ item.name }} - {{item.deviceType}}
-    </v-card-title> 
-
-  
+  <v-card ripple :to="{ path: `repair/${this.$props.item.id}` }">
+    <v-card-title class="subheading font-weight-bold blue--text">
+      {{ item.name }} - {{ item.deviceType }}
+    </v-card-title>
 
     <v-list dense>
       <v-list-item>
         <v-list-item-content>Recepción:</v-list-item-content>
-        <v-list-item-content >
+        <v-list-item-content>
           {{ item.receiptDate }}
         </v-list-item-content>
       </v-list-item>
 
       <v-list-item>
         <v-list-item-content>Detalles:</v-list-item-content>
-        <v-list-item-content >
+        <v-list-item-content>
           {{ item.details }}
         </v-list-item-content>
       </v-list-item>
@@ -34,11 +30,11 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
-import { Reparacion } from "@/types";
+import Vue from 'vue'
+import Component from 'vue-class-component'
+import { Reparacion } from '@/types'
 @Component<RepairItem>({
-  name: "RepairItem",
+  name: 'RepairItem',
   props: {
     item: {
       type: Object,
@@ -47,6 +43,6 @@ import { Reparacion } from "@/types";
   }
 })
 export default class RepairItem extends Vue {
-  $props!: { item: Reparacion };
+  $props!: { item: Reparacion }
 }
 </script>

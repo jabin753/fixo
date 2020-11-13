@@ -1,12 +1,12 @@
-import Vue from "vue";
-import Vuetify from "vuetify";
-import es from "vuetify/src/locale/es";
+import Vue from 'vue'
+import Vuetify from 'vuetify'
+import es from 'vuetify/src/locale/es'
 
-Vue.use(Vuetify);
+Vue.use(Vuetify)
 
 export default new Vuetify({
   lang: {
     locales: { es },
-    current: "es"
+    current: 'es'
   }
-});
+})

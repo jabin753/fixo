@@ -36,37 +36,37 @@
   </v-app>
 </template>
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
-import { auth, gAuth } from "@/plugins/firebase";
+import Vue from 'vue'
+import Component from 'vue-class-component'
+import { auth, gAuth } from '@/plugins/firebase'
 
 @Component<LoginPage>({
-  name: "LoginPage",
+  name: 'LoginPage',
   mounted() {
-    console.log(auth.currentUser);
+    console.log(auth.currentUser)
   }
 })
 export default class LoginPage extends Vue {
-  user = "";
-  pass = "";
+  user = ''
+  pass = ''
   async authUser() {
     const userAutenticated = await auth
       .signInWithEmailAndPassword(this.user, this.pass)
       .catch(err => {
-        console.error(err);
-      });
-    console.log("Usuario autenticado:", userAutenticated);
-    if (userAutenticated) this.$router.replace("/app");
+        console.error(err)
+      })
+    console.log('Usuario autenticado:', userAutenticated)
+    if (userAutenticated) this.$router.replace('/app')
   }
   async authG() {
     const googleUserAutenticated = auth
       .signInWithPopup(new gAuth())
       .catch(err => {
-        console.error(err);
-      });
-    console.log("Bienvenido ", googleUserAutenticated);
+        console.error(err)
+      })
+    console.log('Bienvenido ', googleUserAutenticated)
 
-    if (googleUserAutenticated) this.$router.replace("/app");
+    if (googleUserAutenticated) this.$router.replace('/app')
   }
 }
 </script>
