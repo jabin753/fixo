@@ -8,10 +8,7 @@
           </v-row>
         </v-sheet>
       </v-col>
-      <v-col :cols="$vuetify.breakpoint.lgAndUp ? 9 : 12"
-        ><v-overlay :value="loading">
-          <v-progress-circular indeterminate size="64"></v-progress-circular>
-        </v-overlay>
+      <v-col :cols="$vuetify.breakpoint.lgAndUp ? 9 : 12">
         <v-sheet rounded="lg">
           <p class="text-h3 pa-2">
             {{ reparacion.name }}
@@ -36,21 +33,14 @@ import Component from 'vue-class-component'
 @Component<RepairItem>({
   name: 'RepairDetails',
   async mounted() {
-    this.reparacion = (
-      await db
-        .collection('reparaciones')
-        .doc(this.$route.params.id)
-        .get()
-    ).data() as Reparacion
-  },
-  watch: {
-    reparacion(el) {
-      if (el != {}) this.loading = false
+    if(!this.reparacion) {
+      this.$store.dispatch("bindReparacionesRef")
     }
   }
 })
 export default class RepairItem extends Vue {
-  loading = true
-  reparacion: Partial<Reparacion> = {}
+  get reparacion(): Reparacion {
+    return this.$store.getters["reparacionesById"](this.$route.params.id)
+  }
 }
 </script>

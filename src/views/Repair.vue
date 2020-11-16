@@ -89,7 +89,7 @@
                 <template v-slot:default="props">
                   <v-row>
                     <v-col v-for="item in props.items" :key="item.id" cols="12">
-                      <repair-item :item="item" @click="clickItem(item)" />
+                      <repair-item :item="item" />
                     </v-col>
                   </v-row>
                 </template>
@@ -106,65 +106,42 @@
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import { db, CollectionReference } from '@/plugins/firebase'
 import RepairItem from '@/components/RepairItem.vue'
 import { Reparacion } from '@/types'
-import { DataTableHeader } from 'vuetify'
+import { DataTableHeader, DataOptions } from 'vuetify'
 import faker from 'faker'
+
 @Component<MainLayout>({
   name: 'RepairPage',
-  firestore: {
-    reparaciones: db
-      .collection('reparaciones')
-      .orderBy('receiptDate', 'desc')
-      .limit(10)
-  },
   components: {
     RepairItem
   },
-  watch: {
-    reparaciones(el) {
-      if (el.length > 1) this.loading = false
+  mounted() {
+    if(this.reparaciones.length == 0) {
+      this.$store.dispatch("bindReparacionesRef").then(() => {
+      this.loading = false
+    })
     }
   }
 })
 export default class MainLayout extends Vue {
-  $firestoreRefs!: {
-    reparaciones: CollectionReference<Partial<Reparacion>>
+  get reparaciones(): Reparacion[] {
+    return this.$store.getters["reparaciones"]
   }
-  reparaciones: Reparacion[] = []
-
-  //Data iterator
-  clickItem(item: Reparacion) {
-    console.log(item.name, item.deviceType)
-  }
-  loading = true
+  loading = this.reparaciones.length == 0 ? true : false
   search = ''
   reparacionesPerPage = 5
   page = 1
   sortBy = 'receiptDate'
   keys = [
-    'name',
-    'deviceType',
-    'phone',
-    'details',
-    'deliveredDate',
-    'isReviewed',
-    'tags',
-    'receiptDate'
+    {text: 'Nombre de cliente', value: 'name'},
+    {text: 'Tipo de dispositivo', value: 'deviceType'},
+    {text: 'Fecha de Entrega', value: 'deliveredDate'},
+    {text: 'Revisado', value: 'isReviewed'},
+    {text: 'Fecha de Recepción', value: 'receiptDate'}
   ]
   options = {}
   sortDesc = false
-  nextPage(): void {
-    this.page = this.page + 1
-  }
-  prePage(): void {
-    this.page = this.page - 1
-  }
-  dataTableHeader: DataTableHeader[] = this.keys.map(key => ({
-    text: key,
-    value: key
-  }))
 
   // Add reparación to array
   addReparacion(): void {

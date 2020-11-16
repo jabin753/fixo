@@ -1,4 +1,5 @@
 export interface Reparacion {
+  id?: string
   name: string
   phone: string
   deviceType: string
