@@ -33,14 +33,14 @@ import Component from 'vue-class-component'
 @Component<RepairItem>({
   name: 'RepairDetails',
   async mounted() {
-    if(!this.reparacion) {
-      this.$store.dispatch("bindReparacionesRef")
+    if (!this.reparacion) {
+      this.$store.dispatch('bindReparacionesRef')
     }
   }
 })
 export default class RepairItem extends Vue {
   get reparacion(): Reparacion {
-    return this.$store.getters["reparacionesById"](this.$route.params.id)
+    return this.$store.getters['reparacionesById'](this.$route.params.id)
   }
 }
 </script>

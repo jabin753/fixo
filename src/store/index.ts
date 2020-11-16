@@ -2,7 +2,7 @@ import { db } from '@/plugins/firebase'
 import { Reparacion } from '@/types'
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { vuexfireMutations, firestoreAction } from "vuexfire"
+import { vuexfireMutations, firestoreAction } from 'vuexfire'
 Vue.use(Vuex)
 type Store = {
   reparaciones: Reparacion[]
@@ -14,14 +14,21 @@ export default new Vuex.Store<Store>({
   mutations: vuexfireMutations,
   actions: {
     bindReparacionesRef: firestoreAction(context => {
-      return context.bindFirestoreRef('reparaciones', db.collection("reparaciones").orderBy('receiptDate', "desc"))
+      return context.bindFirestoreRef(
+        'reparaciones',
+        db.collection('reparaciones').orderBy('receiptDate', 'desc').limit(1)
+      )
     }),
     fetchReparacionById: firestoreAction((context, id) => {
-      return context.bindFirestoreRef('reparaciones', db.collection("reparaciones").doc(id))
+      return context.bindFirestoreRef(
+        'reparaciones',
+        db.collection('reparaciones').doc(id)
+      )
     })
   },
   getters: {
     reparaciones: state => state.reparaciones,
-    reparacionesById: state => (id: string) => state.reparaciones.find(rep => rep.id === id)
+    reparacionesById: state => (id: string) =>
+      state.reparaciones.find(rep => rep.id === id)
   }
 })

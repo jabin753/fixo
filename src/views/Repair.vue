@@ -79,9 +79,22 @@
                           <v-icon>mdi-arrow-down</v-icon>
                         </v-btn>
                       </v-btn-toggle>
-                      <v-btn text small class="pl-4" @click="addReparacion">
-                        <v-icon>mdi-plus</v-icon>
-                      </v-btn>
+                      <v-dialog max-width="500">
+                        <template #activator="{on, attrs}">
+                          <v-btn
+                            text
+                            small
+                            class="pl-4"
+                            v-on="on"
+                            v-bind="attrs"
+                          >
+                            <v-icon>mdi-plus</v-icon>
+                          </v-btn>
+                        </template>
+                        <form-reparacion
+                          @submit="addReparacion"
+                        ></form-reparacion>
+                      </v-dialog>
                     </template>
                   </v-toolbar>
                 </template>
@@ -107,26 +120,27 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import RepairItem from '@/components/RepairItem.vue'
+import FormReparacion from '@/components/formReparacion.vue'
 import { Reparacion } from '@/types'
 import { DataTableHeader, DataOptions } from 'vuetify'
-import faker from 'faker'
 
 @Component<MainLayout>({
   name: 'RepairPage',
   components: {
-    RepairItem
+    RepairItem,
+    FormReparacion
   },
   mounted() {
-    if(this.reparaciones.length == 0) {
-      this.$store.dispatch("bindReparacionesRef").then(() => {
-      this.loading = false
-    })
+    if (this.reparaciones.length == 0) {
+      this.$store.dispatch('bindReparacionesRef').then(() => {
+        this.loading = false
+      })
     }
   }
 })
 export default class MainLayout extends Vue {
   get reparaciones(): Reparacion[] {
-    return this.$store.getters["reparaciones"]
+    return this.$store.getters['reparaciones']
   }
   loading = this.reparaciones.length == 0 ? true : false
   search = ''
@@ -134,28 +148,18 @@ export default class MainLayout extends Vue {
   page = 1
   sortBy = 'receiptDate'
   keys = [
-    {text: 'Nombre de cliente', value: 'name'},
-    {text: 'Tipo de dispositivo', value: 'deviceType'},
-    {text: 'Fecha de Entrega', value: 'deliveredDate'},
-    {text: 'Revisado', value: 'isReviewed'},
-    {text: 'Fecha de Recepción', value: 'receiptDate'}
+    { text: 'Nombre de cliente', value: 'name' },
+    { text: 'Tipo de dispositivo', value: 'deviceType' },
+    { text: 'Fecha de Entrega', value: 'deliveredDate' },
+    { text: 'Revisado', value: 'isReviewed' },
+    { text: 'Fecha de Recepción', value: 'receiptDate' }
   ]
   options = {}
   sortDesc = false
 
   // Add reparación to array
-  addReparacion(): void {
-    const rep: Reparacion = {
-      name: `${faker.name.firstName()} ${faker.name.lastName()} ${faker.name.lastName()}`,
-      phone: faker.phone.phoneNumber(),
-      deviceType: faker.commerce.productName(),
-      details: faker.lorem.words(faker.random.number(50)),
-      isReviewed: faker.random.boolean(),
-      tags: faker.lorem.words(faker.random.number(7)).split(' '),
-      receiptDate: faker.date.recent().toISOString(),
-      deliveredDate: faker.date.soon().toISOString()
-    }
-    this.$firestoreRefs.reparaciones.add(rep)
+  addReparacion(e: any): void {
+    console.log(e)
   }
 }
 </script>
