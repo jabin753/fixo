@@ -49,23 +49,24 @@ import { auth, gAuth } from '@/plugins/firebase'
 export default class LoginPage extends Vue {
   user = ''
   pass = ''
-  async authUser() {
-    const userAutenticated = await auth
+  authUser() {
+    const userAutenticated = auth
       .signInWithEmailAndPassword(this.user, this.pass)
       .catch(err => {
         console.error(err)
       })
-    console.log('Usuario autenticado:', userAutenticated)
-    if (userAutenticated) this.$router.replace('/app')
+      .then(user => {
+        if (user) {
+          this.$router.replace('/app')
+        }
+      })
   }
   async authG() {
-    const googleUserAutenticated = auth
+    const googleUserAutenticated = await auth
       .signInWithPopup(new gAuth())
       .catch(err => {
         console.error(err)
       })
-    console.log('Bienvenido ', googleUserAutenticated)
-
     if (googleUserAutenticated) this.$router.replace('/app')
   }
 }
