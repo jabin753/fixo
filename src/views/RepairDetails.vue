@@ -25,7 +25,6 @@
 </template>
 
 <script lang="ts">
-import { db } from '@/plugins/firebase'
 import { Reparacion } from '@/types'
 import Vue from 'vue'
 import Component from 'vue-class-component'

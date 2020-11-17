@@ -16,7 +16,10 @@ export default new Vuex.Store<Store>({
     bindReparacionesRef: firestoreAction(context => {
       return context.bindFirestoreRef(
         'reparaciones',
-        db.collection('reparaciones').orderBy('receiptDate', 'desc').limit(1)
+        db
+          .collection('reparaciones')
+          .orderBy('receiptDate', 'desc')
+          
       )
     }),
     fetchReparacionById: firestoreAction((context, id) => {
@@ -24,6 +27,9 @@ export default new Vuex.Store<Store>({
         'reparaciones',
         db.collection('reparaciones').doc(id)
       )
+    }),
+    saveReparacion: firestoreAction((context, payload) => {
+      return db.collection('reparaciones').add(payload)
     })
   },
   getters: {

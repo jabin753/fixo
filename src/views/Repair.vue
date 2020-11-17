@@ -158,8 +158,12 @@ export default class MainLayout extends Vue {
   sortDesc = false
 
   // Add reparación to array
-  addReparacion(e: any): void {
+  addReparacion(e: Reparacion): void {
     console.log(e)
+    this.$store.dispatch('saveReparacion', e)
+    .then(res => {
+      console.log("Guardado Correctamente" + res)
+    })
   }
 }
 </script>
