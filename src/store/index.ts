@@ -19,7 +19,7 @@ export default new Vuex.Store<Store>({
         db
           .collection('reparaciones')
           .orderBy('receiptDate', 'desc')
-          
+          .limit(5)
       )
     }),
     fetchReparacionById: firestoreAction((context, id) => {

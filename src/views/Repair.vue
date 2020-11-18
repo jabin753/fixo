@@ -30,9 +30,6 @@
           <v-sheet min-height="70vh" rounded="lg">
             <!-- INICIO -->
             <v-container fluid>
-              <div class="d-flex my-1">
-                <v-spacer></v-spacer>
-              </div>
               <v-overlay :value="loading">
                 <v-progress-circular
                   indeterminate
@@ -79,7 +76,14 @@
                           <v-icon>mdi-arrow-down</v-icon>
                         </v-btn>
                       </v-btn-toggle>
-                      <v-dialog max-width="500">
+                      <v-dialog
+                        max-width="500"
+                        eager
+                        v-model="addRepairDialog"
+                        @click:outside.stop="
+                          $nextTick(() => $refs.form.reset())
+                        "
+                      >
                         <template #activator="{on, attrs}">
                           <v-btn
                             text
@@ -92,6 +96,10 @@
                           </v-btn>
                         </template>
                         <form-reparacion
+                          :create="true"
+                          :modal="true"
+                          ref="form"
+                          @close-form="addRepairDialog = false"
                           @submit="addReparacion"
                         ></form-reparacion>
                       </v-dialog>
@@ -157,12 +165,13 @@ export default class MainLayout extends Vue {
   options = {}
   sortDesc = false
 
+  addRepairDialog = false
+
   // Add reparación to array
   addReparacion(e: Reparacion): void {
     console.log(e)
-    this.$store.dispatch('saveReparacion', e)
-    .then(res => {
-      console.log("Guardado Correctamente" + res)
+    this.$store.dispatch('saveReparacion', e).then(res => {
+      console.log('Guardado Correctamente' + res)
     })
   }
 }
