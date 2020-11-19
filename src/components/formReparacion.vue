@@ -48,8 +48,8 @@
           <v-expansion-panel>
             <v-expansion-panel-header
               ><span
-                ><v-icon class="mr-1">mdi-cellphone-link</v-icon> Datos del
-                dispositivo</span
+                ><v-icon class="mr-1">mdi-cellphone-link</v-icon> Información
+                del dispositivo</span
               ></v-expansion-panel-header
             >
             <v-expansion-panel-content>
@@ -240,7 +240,7 @@ import { requiredRule } from '@/components/mixins'
 })
 export default class FormReparacion extends Vue {
   $refs!: Vue['$refs'] & { formReparacion: vForm }
-  $props!: Vue['$props'] & { create: boolean }
+  $props!: Vue['$props'] & { create: boolean; modal: boolean }
   deviceTypeList = [
     { text: 'Teléfono', value: 'Phone' },
     { text: 'Consola', value: 'console' },
@@ -293,16 +293,26 @@ export default class FormReparacion extends Vue {
 
   submitForm() {
     if (this.validate()) {
-      const formObject: Reparacion = {
+      const formObject: any = {
         name: this.name,
         phone: this.phone,
         deviceType: this.deviceType,
+        deviceBrand: this.deviceBrand,
+        deviceModel: this.deviceModel,
+        deviceAttach: this.deviceAttach,
         details: this.details,
         isReviewed: this.isReviewed,
         tags: this.tags,
-        receiptDate: this.receiptDate,
-        deliveredDate: this.deliveredDate ? this.deliveredDate : undefined
+        receiptDate: new Date(),
+        deliveredDate: this.deliveredDate,
+        cotizacionAdelanto: this.cotizacionAdelanto,
+        cotizacionPieza: this.cotizacionPieza,
+        cotizacionPiezaUrl: this.cotizacionPiezaUrl,
+        cotizacionPiezaCosto: this.cotizacionPiezaCosto
       }
+      Object.keys(formObject).forEach((key: any) => {
+        if (formObject[key] === undefined) delete formObject[key]
+      })
       this.$emit('submit', formObject)
     }
   }
