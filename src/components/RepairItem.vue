@@ -8,7 +8,7 @@
       <v-list-item>
         <v-list-item-content>Recepción:</v-list-item-content>
         <v-list-item-content>
-          {{ item.receiptDate }}
+          {{ item.receiptDate | firebaseTimestamp }}
         </v-list-item-content>
       </v-list-item>
 
@@ -39,6 +39,19 @@ import { Reparacion } from '@/types'
     item: {
       type: Object,
       required: true
+    }
+  },
+  filters: {
+    firebaseTimestamp(fTimestamp: any) {
+      return fTimestamp.toDate().toLocaleString('es-ES', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour12: true,
+        hour: '2-digit',
+        minute: '2-digit'
+      })
     }
   }
 })
