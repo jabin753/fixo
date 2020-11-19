@@ -1,5 +1,14 @@
 <template>
   <v-container>
+    <v-snackbar
+      :timeout="5000"
+      :value="snackNotification"
+      color="success darken-2"
+      dark
+    >
+      <span>Guardado correctamente</span>
+    </v-snackbar>
+
     <v-row>
       <v-slide-x-transition>
         <v-col cols="2" v-if="$vuetify.breakpoint.lgAndUp" class="red--text">
@@ -129,7 +138,7 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import RepairItem from '@/components/RepairItem.vue'
 import FormReparacion from '@/components/formReparacion.vue'
-import { Reparacion } from '@/types'
+import { Reparacion, vForm } from '@/types'
 import { DataTableHeader, DataOptions } from 'vuetify'
 
 @Component<MainLayout>({
@@ -147,6 +156,7 @@ import { DataTableHeader, DataOptions } from 'vuetify'
   }
 })
 export default class MainLayout extends Vue {
+  $refs!: Vue['$refs'] & { form: vForm }
   get reparaciones(): Reparacion[] {
     return this.$store.getters['reparaciones']
   }
@@ -163,15 +173,18 @@ export default class MainLayout extends Vue {
     { text: 'Fecha de Recepción', value: 'receiptDate' }
   ]
   options = {}
-  sortDesc = false
+  sortDesc = true
 
   addRepairDialog = false
 
+  snackNotification = false
+
   // Add reparación to array
   addReparacion(e: Reparacion): void {
-    console.log(e)
     this.$store.dispatch('saveReparacion', e).then(res => {
-      console.log('Guardado Correctamente' + res)
+      this.snackNotification = true
+      this.addRepairDialog = false
+      this.$nextTick(() => this.$refs.form.reset())
     })
   }
 }
