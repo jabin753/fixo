@@ -19,7 +19,4 @@ export const auth = firebaseInstance.auth()
 export type CollectionReference<T> = firebase.firestore.CollectionReference<T>
 export const gAuth = firebase.auth.GoogleAuthProvider
 
-// Export types that exists in Firestore
-// This is not always necessary, but it's used in other examples
-const { Timestamp, GeoPoint } = firebase.firestore
-export { Timestamp, GeoPoint }
+export type Timestamp = firebase.firestore.Timestamp

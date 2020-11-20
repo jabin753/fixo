@@ -1,3 +1,5 @@
+import { Timestamp } from './plugins/firebase'
+
 export interface Reparacion {
   id?: string
   name: string
@@ -6,8 +8,8 @@ export interface Reparacion {
   details: string
   isReviewed: boolean
   tags: string[]
-  receiptDate: string
-  deliveredDate?: string
+  receiptDate: Timestamp
+  deliveredDate?: Timestamp
 }
 
 export type vForm = {
