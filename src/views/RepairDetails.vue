@@ -18,6 +18,10 @@
             <v-col cols="6" offset="6" class="pr-5 headline-2">
               <p>Recepción: {{ reparacion.dayReceipt() }}</p>
               <p>
+                Reparación:
+                <span>{{ reparacion.dayRepaired() }}</span>
+              </p>
+              <p>
                 Entrega:
                 <span
                   :class="
@@ -34,6 +38,16 @@
               </p>
             </v-col>
           </v-row>
+          <v-row>
+            <v-col cols="12">
+              <form-reparacion
+                :create="false"
+                :modal="false"
+                :reparacionId="reparacion.id"
+                @submit="updateReparacion"
+              ></form-reparacion>
+            </v-col>
+          </v-row>
           <p class="body-1 mx-5">Detalles {{ reparacion.details }}</p>
         </v-sheet>
       </v-col>
@@ -42,9 +56,10 @@
 </template>
 
 <script lang="ts">
-import { Reparacion, IReparacion } from '@/entities'
+import { Reparacion, ReparacionData } from '@/entities'
 import Vue from 'vue'
 import Component from 'vue-class-component'
+import FormReparacion from '@/components/formReparacion.vue'
 
 @Component<RepairItem>({
   name: 'RepairDetails',
@@ -52,11 +67,24 @@ import Component from 'vue-class-component'
     if (!this.reparacion) {
       this.$store.dispatch('bindReparacionesRef')
     }
+  },
+  components: {
+    FormReparacion
   }
 })
 export default class RepairItem extends Vue {
-  get reparacion(): IReparacion {
-    return new Reparacion({...this.$store.getters['reparacionesById'](this.$route.params.id),id:this.$route.params.id})
+  get reparacion(): Reparacion | undefined {
+    const reparacionData = this.$store.getters['reparacionesById'](
+      this.$route.params.id
+    ) as ReparacionData
+    if (reparacionData) return new Reparacion(reparacionData)
+    else return undefined
+  }
+  updateReparacion(e: ReparacionData): void {
+    this.$store.dispatch(
+      'updateReparacion',
+      Object.assign({}, e, { updatedAt: new Date() })
+    )
   }
 }
 </script>

@@ -14,9 +14,29 @@
         <v-col cols="2" v-if="$vuetify.breakpoint.lgAndUp" class="red--text">
           <v-sheet rounded="lg">
             <v-list color="transparent">
-              <v-list-item v-for="n in 5" :key="n" link>
+              <v-list-item link>
                 <v-list-item-content>
-                  <v-list-item-title> List Item {{ n }} </v-list-item-title>
+                  <v-list-item-title>Más recientes</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+
+              <v-list-item link>
+                <v-list-item-content>
+                  <v-list-item-title>Completados</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+
+              <v-list-item link>
+                <v-list-item-content>
+                  <v-list-item-title>Pendientes</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+
+              <v-list-item link>
+                <v-list-item-content>
+                  <v-list-item-title
+                    >No reparados (feedback)
+                  </v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
 
@@ -25,7 +45,7 @@
               <v-list-item link color="grey lighten-4">
                 <v-list-item-content>
                   <v-list-item-title>
-                    Refresh
+                    Actualizar
                   </v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
@@ -85,34 +105,26 @@
                           <v-icon>mdi-arrow-down</v-icon>
                         </v-btn>
                       </v-btn-toggle>
-                      <v-dialog
-                        max-width="500"
-                        eager
-                        v-model="addRepairDialog"
-                        @click:outside.stop="
-                          $nextTick(() => $refs.form.reset())
-                        "
-                      >
-                        <template #activator="{on, attrs}">
-                          <v-btn
-                            text
-                            small
-                            class="pl-4"
-                            v-on="on"
-                            v-bind="attrs"
-                          >
-                            <v-icon>mdi-plus</v-icon>
-                          </v-btn>
-                        </template>
-                        <form-reparacion
-                          :create="true"
-                          :modal="true"
-                          ref="form"
-                          @close-form="addRepairDialog = false"
-                          @submit="addReparacion"
-                        ></form-reparacion>
-                      </v-dialog>
                     </template>
+                    <v-dialog
+                      max-width="500"
+                      eager
+                      v-model="addRepairDialog"
+                      @click:outside.stop="$nextTick(() => $refs.form.reset())"
+                    >
+                      <template #activator="{on, attrs}">
+                        <v-btn text class="pl-4" v-on="on" v-bind="attrs">
+                          <v-icon>mdi-plus</v-icon>
+                        </v-btn>
+                      </template>
+                      <form-reparacion
+                        :create="true"
+                        :modal="true"
+                        ref="form"
+                        @close-form="addRepairDialog = false"
+                        @submit="addReparacion"
+                      ></form-reparacion>
+                    </v-dialog>
                   </v-toolbar>
                 </template>
 
@@ -138,8 +150,8 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import RepairItem from '@/components/RepairItem.vue'
 import FormReparacion from '@/components/formReparacion.vue'
-import { Reparacion, vForm } from '@/types'
-import { DataTableHeader, DataOptions } from 'vuetify'
+import { vForm } from '@/types'
+import { Reparacion, ReparacionData } from '@/entities'
 
 @Component<MainLayout>({
   name: 'RepairPage',
@@ -158,7 +170,10 @@ import { DataTableHeader, DataOptions } from 'vuetify'
 export default class MainLayout extends Vue {
   $refs!: Vue['$refs'] & { form: vForm }
   get reparaciones(): Reparacion[] {
-    return this.$store.getters['reparaciones']
+    const reparacionData = this.$store.getters[
+      'reparaciones'
+    ] as ReparacionData[]
+    return reparacionData.map(r => new Reparacion(r))
   }
   loading = this.reparaciones.length == 0 ? true : false
   search = ''
@@ -180,8 +195,8 @@ export default class MainLayout extends Vue {
   snackNotification = false
 
   // Add reparación to array
-  addReparacion(e: Reparacion): void {
-    this.$store.dispatch('saveReparacion', e).then(res => {
+  addReparacion(e: ReparacionData): void {
+    this.$store.dispatch('saveReparacion', e).then(() => {
       this.snackNotification = true
       this.addRepairDialog = false
       this.$nextTick(() => this.$refs.form.reset())

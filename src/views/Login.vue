@@ -50,7 +50,7 @@ export default class LoginPage extends Vue {
   user = ''
   pass = ''
   authUser() {
-    const userAutenticated = auth
+    auth
       .signInWithEmailAndPassword(this.user, this.pass)
       .catch(err => {
         console.error(err)
