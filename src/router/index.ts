@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 import App from '@/App.vue'
+import store from '@/store'
+import { AuthUser } from '@/plugins/firebase'
 
 Vue.use(VueRouter)
 
@@ -12,11 +14,14 @@ const routes: Array<RouteConfig> = [
       { path: '', redirect: 'login' },
       {
         path: 'login',
-        component: () => import('@/views/Login.vue')
+        name: 'LoginPage',
+        component: () => import('@/views/Login.vue'),
+        meta: { requireAuth: false }
       },
       {
         path: 'app',
         component: () => import('@/views/MainLayout.vue'),
+        meta: { requireAuth: true },
         children: [
           {
             path: '',
@@ -24,27 +29,51 @@ const routes: Array<RouteConfig> = [
           },
           {
             path: 'repair',
-            component: () => import('@/views/Repair.vue')
+            component: () => import('@/views/Repair.vue'),
+            meta: { requireAuth: true }
           },
           {
             path: 'repair/:id',
-            component: () => import('@/views/RepairDetails.vue')
+            component: () => import('@/views/RepairDetails.vue'),
+            meta: { requireAuth: true }
           },
-          { path: 'chat', component: () => import('@/views/Chat.vue') },
+          {
+            path: 'chat',
+            component: () => import('@/views/Chat.vue'),
+            meta: { requireAuth: true }
+          },
           {
             path: 'config',
-            component: () => import('@/views/Configs.vue')
+            component: () => import('@/views/Configs.vue'),
+            meta: { requireAuth: true }
           }
         ]
       }
     ]
   }
 ]
-
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  // Using delay because store doesn't retrieve user info soon
+  setTimeout(
+    () => {
+      const user = store.getters['currentUser'] as AuthUser
+      if (to.meta.requireAuth) {
+        if (user) {
+          next()
+        } else {
+          router.push({ name: 'LoginPage' })
+        }
+      }
+      next()
+    },
+    from.path == '/' ? 500 : 0
+  )
 })
 
 export default router

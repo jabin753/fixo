@@ -1,6 +1,7 @@
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 import 'firebase/auth'
+import store from '@/store'
 const firebaseConfig = {
   apiKey: 'AIzaSyCUy5MzaUTVHRp7-xdkfMDerchD96O18SI',
   authDomain: 'updownpv.firebaseapp.com',
@@ -20,3 +21,12 @@ export type CollectionReference<T> = firebase.firestore.CollectionReference<T>
 export const gAuth = firebase.auth.GoogleAuthProvider
 
 export type Timestamp = firebase.firestore.Timestamp
+export type AuthUser = firebase.User
+
+firebase.auth().onAuthStateChanged(async user => {
+  if (user) {
+    await store.dispatch('FIREBASE_AUTH', user)
+  } else if (!user) {
+    await store.dispatch('FIREBASE_LOGOUT')
+  }
+})

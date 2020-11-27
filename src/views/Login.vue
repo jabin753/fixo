@@ -42,8 +42,14 @@ import { auth, gAuth } from '@/plugins/firebase'
 
 @Component<LoginPage>({
   name: 'LoginPage',
-  mounted() {
-    console.log(auth.currentUser)
+  beforeCreate() {
+    setTimeout(() => {
+      const user = this.$store.getters['currentUser']
+      console.log(user)
+      if (user) {
+        this.$router.push('/app')
+      }
+    }, 500)
   }
 })
 export default class LoginPage extends Vue {
@@ -57,7 +63,7 @@ export default class LoginPage extends Vue {
       })
       .then(user => {
         if (user) {
-          this.$router.replace('/app')
+          this.$router.push('/app')
         }
       })
   }
@@ -67,7 +73,7 @@ export default class LoginPage extends Vue {
       .catch(err => {
         console.error(err)
       })
-    if (googleUserAutenticated) this.$router.replace('/app')
+    if (googleUserAutenticated) this.$router.push('/app')
   }
 }
 </script>
