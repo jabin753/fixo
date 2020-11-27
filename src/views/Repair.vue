@@ -8,7 +8,6 @@
     >
       <span>Guardado correctamente</span>
     </v-snackbar>
-
     <v-row>
       <v-slide-x-transition>
         <v-col cols="2" v-if="$vuetify.breakpoint.lgAndUp" class="red--text">
@@ -142,6 +141,18 @@
         </v-col>
       </v-slide-x-transition>
     </v-row>
+    <v-btn
+        class="hidden-md-and-up"  
+        bottom
+        color="primary"
+        fab
+        fixed
+        rel="noopener"
+        right
+        target="_blank"
+      >
+        <v-icon>mdi-plus</v-icon>
+      </v-btn>
   </v-container>
 </template>
 

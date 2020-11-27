@@ -2,6 +2,7 @@ import firebase from 'firebase/app'
 import 'firebase/firestore'
 import 'firebase/auth'
 import store from '@/store'
+import router from '@/router'
 const firebaseConfig = {
   apiKey: 'AIzaSyCUy5MzaUTVHRp7-xdkfMDerchD96O18SI',
   authDomain: 'updownpv.firebaseapp.com',
@@ -28,5 +29,6 @@ firebase.auth().onAuthStateChanged(async user => {
     await store.dispatch('FIREBASE_AUTH', user)
   } else if (!user) {
     await store.dispatch('FIREBASE_LOGOUT')
+    router.push({name:'LoginPage'})
   }
 })
