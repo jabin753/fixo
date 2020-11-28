@@ -1,35 +1,37 @@
 <template>
   <v-app id="inspire">
-    <v-app-bar
-      app
-      color="white"
-      flat
-      elevation="2"
-    >
-      <v-img max-height="50" max-width="50" :src="require('@/assets/logo.svg')" :lazy-src="require('@/assets/logo.svg')" />
-
-      <v-tabs
-        centered
-        class="ml-n9"
-        color="grey darken-1"
+    <v-app-bar app color="white" flat elevation="2">
+      <v-img
+        max-height="50"
+        max-width="50"
+        :src="require('@/assets/logo.svg')"
+        :lazy-src="require('@/assets/logo.svg')"
+      />
+      <v-btn
+        class="ml-5"
+        text
+        @click="$router.go(-1)"
+        v-if="$route.name && $route.name.includes('Details')"
       >
-        <v-tab
-          v-for="link in links"
-          :key="link.to"
-          :to="link.to"
-        >
+        <v-icon>mdi-chevron-left</v-icon>
+      </v-btn>
+      <v-tabs centered class="ml-n9" color="grey darken-1">
+        <v-tab v-for="link in links" :key="link.to" :to="link.to">
           {{ link.name }}
         </v-tab>
       </v-tabs>
 
-       <v-menu
-        bottom
-        left
-      >
+      <v-menu bottom left>
         <template v-slot:activator="{ on, attrs }">
           <v-avatar>
-            <v-img v-bind="attrs"
-            v-on="on" :src="currentUserProfilePic || require('@/assets/user.png')" class="hidden-sm-and-down" max-height="50" max-width="50" />
+            <v-img
+              v-bind="attrs"
+              v-on="on"
+              :src="currentUserProfilePic || require('@/assets/user.png')"
+              class="hidden-sm-and-down"
+              max-height="50"
+              max-width="50"
+            />
           </v-avatar>
         </template>
 
@@ -39,7 +41,6 @@
           </v-list-item>
         </v-list>
       </v-menu>
-
     </v-app-bar>
 
     <v-main class="grey lighten-3">
@@ -57,7 +58,7 @@ import Component from 'vue-class-component'
 })
 export default class MainLayout extends Vue {
   get currentUserProfilePic() {
-    const currentUser = this.$store.getters["currentUser"] as AuthUser
+    const currentUser = this.$store.getters['currentUser'] as AuthUser
     return currentUser.photoURL
   }
   links = [

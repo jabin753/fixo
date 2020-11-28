@@ -34,6 +34,7 @@ const routes: Array<RouteConfig> = [
           },
           {
             path: 'repair/:id',
+            name: 'RepairDetails',
             component: () => import('@/views/RepairDetails.vue'),
             meta: { requireAuth: true }
           },
