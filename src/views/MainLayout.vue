@@ -6,7 +6,7 @@
       flat
       elevation="2"
     >
-      <v-img max-height="50" max-width="50" :src="require('@/assets/logo.png')" :lazy-src="require('@/assets/logo.png')" />
+      <v-img max-height="50" max-width="50" :src="require('@/assets/logo.svg')" :lazy-src="require('@/assets/logo.svg')" />
 
       <v-tabs
         centered
