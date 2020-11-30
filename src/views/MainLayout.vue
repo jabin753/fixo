@@ -7,14 +7,6 @@
         :src="require('@/assets/logo.svg')"
         :lazy-src="require('@/assets/logo.svg')"
       />
-      <v-btn
-        class="ml-5"
-        text
-        @click="$router.go(-1)"
-        v-if="$route.name && $route.name.includes('Details')"
-      >
-        <v-icon>mdi-chevron-left</v-icon>
-      </v-btn>
       <v-tabs centered class="ml-n9" color="grey darken-1">
         <v-tab v-for="link in links" :key="link.to" :to="link.to">
           {{ link.name }}

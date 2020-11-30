@@ -142,17 +142,17 @@
       </v-slide-x-transition>
     </v-row>
     <v-btn
-        class="hidden-md-and-up"  
-        bottom
-        color="primary"
-        fab
-        fixed
-        rel="noopener"
-        right
-        target="_blank"
-      >
-        <v-icon>mdi-plus</v-icon>
-      </v-btn>
+      class="hidden-md-and-up"
+      bottom
+      color="primary"
+      fab
+      fixed
+      rel="noopener"
+      right
+      target="_blank"
+    >
+      <v-icon>mdi-plus</v-icon>
+    </v-btn>
   </v-container>
 </template>
 

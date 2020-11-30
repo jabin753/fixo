@@ -10,45 +10,23 @@
       </v-col>
       <v-col :cols="$vuetify.breakpoint.lgAndUp ? 9 : 12">
         <v-sheet rounded="lg" v-if="reparacion">
-          <p class="text-h3 pa-2">
-            {{ reparacion.name }}
-          </p>
-          <v-spacer></v-spacer>
-          <v-row dense no-gutters>
-            <v-col cols="6" offset="6" class="pr-5 headline-2">
-              <p>Recepción: {{ reparacion.dayReceipt() }}</p>
-              <p>
-                Reparación:
-                <span>{{ reparacion.dayRepaired() }}</span>
-              </p>
-              <p>
-                Entrega:
-                <span
-                  :class="
-                    reparacion.deliveredDate ? 'success--text' : 'warning--text'
-                  "
-                  >{{ reparacion.dayDelivered() }}</span
-                >
-              </p>
-              <p
-                v-if="reparacion.deliveredDate"
-                class="text-right mr-5 info--text"
-              >
-                {{ reparacion.deliveredDate }}
-              </p>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="12">
-              <form-reparacion
-                :create="false"
-                :modal="false"
-                :reparacionId="reparacion.id"
-                @submit="updateReparacion"
-              ></form-reparacion>
-            </v-col>
-          </v-row>
-          <p class="body-1 mx-5">Detalles {{ reparacion.details }}</p>
+          <v-app-bar
+            color="white"
+            elevation="0"
+            outlined
+            :app="$vuetify.breakpoint.mdAndDown ? true : false"
+          >
+            <v-icon @click="$router.go(-1)" left>mdi-arrow-left</v-icon>
+            <v-app-bar-title class="pa-2">{{
+              reparacion.name
+            }}</v-app-bar-title>
+          </v-app-bar>
+          <form-reparacion
+            :create="false"
+            :modal="false"
+            :reparacionId="reparacion.id"
+            @submit="updateReparacion"
+          ></form-reparacion>
         </v-sheet>
       </v-col>
     </v-row>

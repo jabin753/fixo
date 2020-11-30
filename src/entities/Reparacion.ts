@@ -12,119 +12,77 @@ export class Reparacion implements ReparacionData, ReparacionFns {
   details: string
   isReviewed: boolean
   tags: string[]
-  receiptDate: Date | Timestamp
-  repairedDate?: Date | Timestamp
-  deliveredDate?: Date | Timestamp
+  receiptDate: Date
+  repairedDate?: Date
+  deliveredDate?: Date
   cotizacionAdelanto?: boolean
   cotizacionPieza?: number
   cotizacionPiezaUrl?: string
   cotizacionPiezaCosto?: number
 
-  constructor(reparacion?: ReparacionData) {
-    if (reparacion) {
-      if (reparacion.id) this.id = reparacion.id
-      this.name = reparacion.name
-      this.phone = reparacion.phone
-      this.deviceType = reparacion.deviceType
-      if (reparacion.deviceBrand) this.deviceBrand = reparacion.deviceBrand
-      if (reparacion.deviceModel) this.deviceModel = reparacion.deviceModel
-      if (reparacion.deviceAttach) this.deviceAttach = reparacion.deviceAttach
-      this.details = reparacion.details
-      this.isReviewed = reparacion.isReviewed
-      this.tags = reparacion.tags
-      this.receiptDate = reparacion.receiptDate
-      if (reparacion.receiptDate) this.repairedDate = reparacion.repairedDate
-      if (reparacion.repairedDate) this.repairedDate = reparacion.repairedDate
-      if (reparacion.deliveredDate)
-        this.deliveredDate = reparacion.deliveredDate
-      if (reparacion.cotizacionAdelanto)
-        this.cotizacionAdelanto = reparacion.cotizacionAdelanto
-      if (reparacion.cotizacionPieza)
-        this.cotizacionPieza = reparacion.cotizacionPieza
-      if (reparacion.cotizacionPiezaUrl)
-        this.cotizacionPiezaUrl = reparacion.cotizacionPiezaUrl
-      if (reparacion.cotizacionPiezaCosto)
-        this.cotizacionPiezaCosto = reparacion.cotizacionPiezaCosto
-    } else {
-      this.name = ''
-      this.phone = ''
-      this.deviceType = ''
-      this.details = ''
-      this.isReviewed = false
-      this.tags = []
-      this.receiptDate = new Date()
+  constructor(
+    reparacion: ReparacionData = {
+      name: '',
+      phone: '',
+      deviceType: '',
+      details: '',
+      isReviewed: false,
+      tags: [],
+      receiptDate: new Date()
     }
+  ) {
+    this.id = reparacion.id
+    this.name = reparacion.name
+    this.phone = reparacion.phone
+    this.deviceType = reparacion.deviceType
+    this.deviceBrand = reparacion.deviceBrand || undefined
+    this.deviceModel = reparacion.deviceModel || undefined
+    this.deviceAttach = reparacion.deviceAttach || undefined
+    this.details = reparacion.details
+    this.isReviewed = reparacion.isReviewed
+    this.tags = reparacion.tags
+    this.receiptDate = this.setterDate(reparacion.receiptDate)
+    if (reparacion.repairedDate)
+      this.repairedDate = this.setterDate(reparacion.repairedDate)
+    if (reparacion.deliveredDate)
+      this.deliveredDate = this.setterDate(reparacion.deliveredDate)
+    this.cotizacionAdelanto = reparacion.cotizacionAdelanto || undefined
+    this.cotizacionPieza = reparacion.cotizacionPieza || undefined
+    this.cotizacionPiezaUrl = reparacion.cotizacionPiezaUrl || undefined
+    this.cotizacionPiezaCosto = reparacion.cotizacionPiezaCosto || undefined
   }
 
   public get receiptDatePicker(): string {
     return this.getterDatePicker(this.receiptDate) as string
   }
-  public set receiptDatePicker(date: string) {
-    this.receiptDate = this.setterDatePicker(date) as Date
-  }
   public get receiptDateTime(): string {
     return this.getterDateTime(this.receiptDate) as string
-  }
-  public set receiptDateTime(date: string) {
-    this.setterDateTime("receiptDate",date)
   }
 
   public get repairedDatePicker(): string | undefined {
     return this.getterDatePicker(this.repairedDate)
   }
-  public set repairedDatePicker(date: string | undefined) {
-    this.repairedDate = this.setterDatePicker(date)
-  }
   public get repairedDateTime(): string | undefined {
     return this.getterDateTime(this.repairedDate)
   }
-  public set repairedDateTime(date: string | undefined) {
-    this.setterDateTime("repairedDate",date as string)
-  }
 
   public get deliveredDatePicker(): string | undefined {
-    if (this.deliveredDate) return this.getterDatePicker(this.deliveredDate)
-  }
-  public set deliveredDatePicker(date: string | undefined) {
-    this.setterDatePicker('deliveredDate', date as string)
+    return this.getterDatePicker(this.deliveredDate)
   }
   public get deliveredDateTime(): string | undefined {
-    if (this.deliveredDate) return this.getterDateTime(this.deliveredDate)
-  }
-  public set deliveredDateTime(date: string | undefined) {
-    this.setterDateTime("deliveredDate",date as string)
+    return this.getterDateTime(this.deliveredDate)
   }
 
-
-
-  private getterDatePicker(date: Date | Timestamp | undefined): string | undefined {
-    console.log(date)
-    if(!date) return
-
-    let parsedDate: Date
-    if (date instanceof Date) parsedDate = date
-    else parsedDate = date.toDate()
-    return parsedDate.toISOString().split('T')[0]
+  private setterDate(date: Date | Timestamp) {
+    return date instanceof Date ? date : date.toDate()
   }
-  private setterDatePicker(newDate: string | undefined): Date | undefined {
-    if(!newDate) return
-      return new Date(`${newDate} ${new Date().toTimeString().substr(0,5)}:00`)
+  private getterDatePicker(date: Date | undefined): string | undefined {
+    if (!date) return
+    return date.toISOString().split('T')[0]
   }
-  private getterDateTime(date: Date | Timestamp | undefined): string | undefined {
-    if(!date) return
-    let parsedDate: Date
-    if (date instanceof Date) parsedDate = date
-    else parsedDate = date.toDate()
-    return parsedDate.toTimeString().substr(0,5)
-  }
-  private setterDateTime(
-    dateRef: string,
-    newTime: string = '00:00'
-  ) {
-    // @ts-ignore we are allowed to write it
-    const newParsedDate = new Date(`${this[dateRef+'Picker']} ${newTime}:00`)
-    // @ts-ignore we are allowed to write it
-    this[dateRef] = newParsedDate
+  private getterDateTime(date: Date | undefined): string | undefined {
+    if (!date) return
+    return date.toTimeString().substr(0, 5)
   }
   private localeStringFormat(
     date: Date,
@@ -142,16 +100,16 @@ export class Reparacion implements ReparacionData, ReparacionFns {
   }
 
   dayReceipt(): string {
-    return this.localeStringFormat((this.receiptDate as Timestamp).toDate())
+    return this.localeStringFormat(this.receiptDate)
   }
   dayRepaired(): string {
     if (this.repairedDate) {
-      return this.localeStringFormat((this.repairedDate as Timestamp).toDate())
+      return this.localeStringFormat(this.repairedDate)
     } else return 'Reparación Pendiente'
   }
   dayDelivered(): string {
     if (this.deliveredDate) {
-      return this.localeStringFormat((this.deliveredDate as Timestamp).toDate())
+      return this.localeStringFormat(this.deliveredDate)
     } else return 'Entrega Pendiente'
   }
   daysBetweenReceivedAndRepaired(): string | undefined {

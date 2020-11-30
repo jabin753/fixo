@@ -29,6 +29,6 @@ firebase.auth().onAuthStateChanged(async user => {
     await store.dispatch('FIREBASE_AUTH', user)
   } else if (!user) {
     await store.dispatch('FIREBASE_LOGOUT')
-    router.push({name:'LoginPage'})
+    router.push({ name: 'LoginPage' })
   }
 })

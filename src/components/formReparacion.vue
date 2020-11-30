@@ -85,111 +85,24 @@
               ></v-expansion-panel-header
             >
             <v-expansion-panel-content>
-              <v-row no-gutters>
-                <v-col cols="3">
-                  <v-menu
-                    :close-on-content-click="true"
-                    transition="scale-transition"
-                    offset-y
-                    min-width="290px"
-                  >
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-text-field
-                        class="ma-4"
-                        v-model="reparacion.receiptDatePicker"
-                        label="Fecha de recepción"
-                        prepend-icon="mdi-calendar"
-                        readonly
-                        v-bind="attrs"
-                        v-on="on"
-                      ></v-text-field>
-                    </template>
-                    <v-date-picker v-model="reparacion.receiptDatePicker">
-                    </v-date-picker>
-                  </v-menu>
+              <v-row>
+                <v-col cols="12" sm="12" md="6" lg="6">
+                  <v-date-time-picker
+                    v-model="reparacion.receiptDate"
+                    label="Fecha de recepción"
+                  ></v-date-time-picker>
                 </v-col>
-                <v-col cols="3" class="mt-3 mr-0">
-                  <v-menu
-                    ref="receiptMenu"
-                    :close-on-content-click="false"
-                    :nudge-right="40"
-                    :return-value.sync="reparacion.receiptDateTime"
-                    transition="scale-transition"
-                    offset-y
-                    max-width="290px"
-                    min-width="290px"
-                  >
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-text-field
-                        v-model="reparacion.receiptDateTime"
-                        label="Hora"
-                        append-outer-icon="mdi-clock-time-four-outline"
-                        readonly
-                        v-bind="attrs"
-                        v-on="on"
-                      ></v-text-field>
-                    </template>
-                    <v-time-picker
-                      v-model="time"
-                      full-width
-                      @click:minute="$refs.receiptMenu.save(time)"
-                    ></v-time-picker>
-                  </v-menu>
+                <v-col cols="12" md="6" lg="6">
+                  <v-date-time-picker
+                    v-model="reparacion.repairedDate"
+                    label="Fecha de reparación"
+                  ></v-date-time-picker>
                 </v-col>
-              </v-row>
-
-              <v-row no-gutters>
-                <v-col cols="3">
-                  <v-menu
-                    :close-on-content-click="true"
-                    transition="scale-transition"
-                    offset-y
-                    min-width="290px"
-                  >
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-text-field
-                        class="ma-4"
-                        v-model="reparacion.repairedDatePicker"
-                        label="Fecha de Reparación"
-                        prepend-icon="mdi-calendar"
-                        readonly
-                        v-bind="attrs"
-                        v-on="on"
-                        clearable
-                      ></v-text-field>
-                    </template>
-                    <v-date-picker v-model="reparacion.repairedDatePicker">
-                    </v-date-picker>
-                  </v-menu>
-                </v-col>
-                <v-col cols="3" class="mt-3 mr-0">
-                  <v-menu
-                    v-if="reparacion.repairedDatePicker"
-                    ref="repairedMenu"
-                    :close-on-content-click="false"
-                    :nudge-right="40"
-                    :return-value.sync="reparacion.repairedDateTime"
-                    transition="scale-transition"
-                    offset-y
-                    max-width="290px"
-                    min-width="290px"
-                  >
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-text-field
-                        v-model="reparacion.repairedDateTime"
-                        label="Hora"
-                        append-outer-icon="mdi-clock-time-four-outline"
-                        readonly
-                        v-bind="attrs"
-                        v-on="on"
-                      ></v-text-field>
-                    </template>
-                    <v-time-picker
-                      v-model="reparacion.repairedDateTime"
-                      full-width
-                      @click:minute="$refs.repairedMenu.save(reparacion.repairedDateTime)"
-                    ></v-time-picker>
-                  </v-menu>
+                <v-col cols="12" md="6" lg="6">
+                  <v-date-time-picker
+                    v-model="reparacion.deliveredDate"
+                    label="Fecha de Entrega"
+                  ></v-date-time-picker>
                 </v-col>
               </v-row>
             </v-expansion-panel-content>
@@ -226,16 +139,6 @@
             </v-expansion-panel-content>
           </v-expansion-panel>
         </v-expansion-panels>
-
-        <!-- <v-checkbox v-model="isReviewed" label="Checado"></v-checkbox> -->
-        <!-- <v-select
-          :items="tags"
-          v-model="tags"
-          multiple
-          chips
-          hint="Categorías disponibles"
-          persistent-hint
-        ></v-select> -->
       </v-form>
     </v-card-text>
     <v-card-actions>
@@ -251,6 +154,7 @@ import Component from 'vue-class-component'
 import { vForm } from '@/types'
 import { requiredRule } from '@/components/mixins'
 import { Reparacion, ReparacionData } from '@/entities'
+import VDateTimePicker from './DateTimePicker.vue'
 @Component<FormReparacion>({
   name: 'FormReparacion',
   props: {
@@ -270,6 +174,9 @@ import { Reparacion, ReparacionData } from '@/entities'
         this.reparacion = new Reparacion(reparacionData)
       }
     }
+  },
+  components: {
+    VDateTimePicker
   }
 })
 export default class FormReparacion extends Vue {
@@ -279,8 +186,6 @@ export default class FormReparacion extends Vue {
     modal: boolean
     reparacionId: string
   }
-
-  createMode = !this.$props.reparacionId
 
   deviceTypeList = [
     { text: 'Teléfono', value: 'Phone' },
@@ -294,8 +199,6 @@ export default class FormReparacion extends Vue {
     'Consola de Videojuego',
     'Otro'
   ]
-  time = ''
-
   reparacion: Reparacion = new Reparacion()
 
   panels = []
