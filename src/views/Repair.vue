@@ -112,7 +112,13 @@
                       @click:outside.stop="$nextTick(() => $refs.form.reset())"
                     >
                       <template #activator="{on, attrs}">
-                        <v-btn text class="pl-4" v-on="on" v-bind="attrs">
+                        <v-btn
+                          text
+                          class="pl-4"
+                          v-on="on"
+                          v-bind="attrs"
+                          v-show="$vuetify.breakpoint.mdAndUp"
+                        >
                           <v-icon>mdi-plus</v-icon>
                         </v-btn>
                       </template>
@@ -149,7 +155,7 @@
       fixed
       rel="noopener"
       right
-      target="_blank"
+      @click="addRepairDialog = true"
     >
       <v-icon>mdi-plus</v-icon>
     </v-btn>
