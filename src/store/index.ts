@@ -1,17 +1,19 @@
 import { AuthUser, db } from '@/plugins/firebase'
-import { Reparacion } from '@/types'
+import { ReparacionData, ClienteData } from '@/entities'
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { vuexfireMutations, firestoreAction } from 'vuexfire'
 Vue.use(Vuex)
 type Store = {
-  reparaciones: Reparacion[]
+  reparaciones: ReparacionData[]
   currentUser: AuthUser | null
+  clientes: ClienteData[]
 }
 export default new Vuex.Store<Store>({
   state: {
     reparaciones: [],
-    currentUser: null
+    currentUser: null,
+    clientes: []
   },
   mutations: {
     AUTH_SUCCESS: (state, payload: AuthUser) => {
@@ -49,12 +51,34 @@ export default new Vuex.Store<Store>({
         .collection('reparaciones')
         .doc(payload.id)
         .update(payload)
+    }),
+
+    bindClientesRef: firestoreAction(context => {
+      return context.bindFirestoreRef('clientes', db.collection('clientes'))
+    }),
+    fetchClientesById: firestoreAction((context, id) => {
+      return context.bindFirestoreRef(
+        'clientes',
+        db.collection('reparaciones').doc(id)
+      )
+    }),
+    saveCliente: firestoreAction((context, payload) => {
+      return db.collection('clientes').add(payload)
+    }),
+    updateCliente: firestoreAction((context, payload) => {
+      return db
+        .collection('clientes')
+        .doc(payload.id)
+        .update(payload)
     })
   },
   getters: {
     currentUser: state => state.currentUser,
     reparaciones: state => state.reparaciones,
     reparacionesById: state => (id: string) =>
-      state.reparaciones.find(rep => rep.id === id)
+      state.reparaciones.find(rep => rep.id === id),
+    clientes: state => state.clientes,
+    clientesById: state => (id: string) =>
+      state.clientes.find(cliente => cliente.id === id)
   }
 })

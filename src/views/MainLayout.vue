@@ -55,7 +55,7 @@ export default class MainLayout extends Vue {
   }
   links = [
     { name: 'Reparaciones', to: '/app/repair' },
-    { name: 'Chat', to: '/app/chat' },
+    { name: 'Clientes', to: '/app/cliente' },
     { name: 'Configuración', to: '/app/config' }
   ]
   logout(): void {
