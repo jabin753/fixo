@@ -85,8 +85,11 @@ export default new Vuex.Store<Store>({
       return db
         .collection('clientes')
         .doc(payload.id)
-        .update({...payload,
-        reparaciones: reparaciones?.map(rep => db.collection('reparaciones').doc(rep.id))
+        .update({
+          ...payload,
+          reparaciones: reparaciones?.map(rep =>
+            db.collection('reparaciones').doc(rep.id)
+          )
         })
     })
   },
