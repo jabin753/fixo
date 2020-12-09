@@ -36,7 +36,7 @@
 
       <v-slide-x-transition>
         <v-col cols="12" lg="7">
-          <v-sheet min-height="70vh" rounded="lg">
+          <v-sheet rounded="lg">
             <!-- INICIO -->
             <v-container fluid>
               <v-overlay :value="loading">
@@ -120,6 +120,19 @@
                       <cliente-item :item="item" />
                     </v-col>
                   </v-row>
+                </template>
+
+                <template #no-data>
+                  <div class="d-flex align-center justify-center ma-5">
+                    <v-btn
+                      color="green lighten-2"
+                      dark
+                      @click="addClienteDialog = true"
+                    >
+                      <v-icon>mdi-plus</v-icon>
+                      Agregar orden de reparación
+                    </v-btn>
+                  </div>
                 </template>
               </v-data-iterator>
             </v-container>
