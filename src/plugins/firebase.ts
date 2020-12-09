@@ -17,6 +17,11 @@ const firebaseConfig = {
 // Get a Firestore instance
 const firebaseInstance = firebase.initializeApp(firebaseConfig)
 export const db = firebaseInstance.firestore()
+
+if (location.hostname === 'localhost') {
+  db.useEmulator('localhost', 8081)
+}
+
 export const auth = firebaseInstance.auth()
 export const FieldValue = firebase.firestore.FieldValue
 export type CollectionReference<T> = firebase.firestore.CollectionReference<T>
