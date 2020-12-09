@@ -80,11 +80,14 @@ export default new Vuex.Store<Store>({
     saveCliente: firestoreAction((context, payload) => {
       return db.collection('clientes').add(payload)
     }),
-    updateCliente: firestoreAction((context, payload) => {
+    updateCliente: firestoreAction((context, payload: ClienteData) => {
+      const reparaciones = payload.reparaciones
       return db
         .collection('clientes')
         .doc(payload.id)
-        .update(payload)
+        .update({...payload,
+        reparaciones: reparaciones?.map(rep => db.collection('reparaciones').doc(rep.id))
+        })
     })
   },
   getters: {
