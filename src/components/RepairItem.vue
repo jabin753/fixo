@@ -1,7 +1,7 @@
 <template>
   <v-card ripple :to="{ path: `repair/${this.$props.item.id}` }">
     <v-card-title class="subheading font-weight-bold blue--text">
-      {{ reparacion.name }} - {{ reparacion.deviceType }}
+      {{ reparacion.cliente.nombre }} - {{ reparacion.deviceType }}
     </v-card-title>
 
     <v-list dense>
@@ -29,7 +29,7 @@
       <v-list-item>
         <v-list-item-content>Teléfono:</v-list-item-content>
         <v-list-item-content class="align-end">
-          {{ reparacion.phone }}
+          {{ reparacion.cliente.telefono }}
         </v-list-item-content>
       </v-list-item>
     </v-list>

@@ -54,7 +54,11 @@ import { requiredRule } from './mixins'
     // Shows the component as a modal
     modal: Boolean,
     // if id is given, then it'll update data
-    clienteId: String
+    clienteId: String,
+    initName: {
+      type: String,
+      default: ''
+    }
   },
   mounted() {
     if (this.$props.clienteId) {
@@ -73,9 +77,10 @@ export default class FormCliente extends Vue {
     create: boolean
     modal: boolean
     clienteId: string
+    initName: string
   }
 
-  cliente: Cliente = new Cliente()
+  cliente: Cliente = new Cliente({ nombre: this.$props.initName })
 
   validForm = false
   requiredRule = requiredRule
@@ -99,11 +104,6 @@ export default class FormCliente extends Vue {
 
   submitForm() {
     if (this.validate() && this.cliente.valid()) {
-      const formKeys = Object.keys(this.cliente) as Array<keyof ClienteData>
-      formKeys.forEach(key => {
-        // @ts-ignore if we set or unset vars, those tend to be undefined, but 'undefined' doesn´t save on firestore and throws Error
-        if (this.cliente[key] === undefined) this.cliente[key] = null
-      })
       this.$emit('submit', Object.assign({}, this.cliente))
     }
   }

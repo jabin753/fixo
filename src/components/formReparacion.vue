@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card class="d-print-table-row">
     <v-card-title>
       <span>{{ $props.create ? 'Nueva Reparación' : '' }}</span>
       <v-spacer></v-spacer>
@@ -9,25 +9,11 @@
     </v-card-title>
     <v-card-text>
       <v-form ref="formReparacion" lazy-validation v-model="validForm">
-        <v-text-field
-          v-model="reparacion.name"
-          label="Nombre"
-          clearable
-          hint="Obligatorio"
-          persistent-hint
+        <v-autocomplete-cliente
+          :disabled="!$props.create"
+          v-model="reparacion.cliente"
           :rules="[requiredRule]"
-        ></v-text-field>
-        <v-text-field
-          class="mb-5"
-          v-model="reparacion.phone"
-          label="Teléfono"
-          clearable
-          hint="Obligatorio"
-          persistent-hint
-          :rules="[requiredRule]"
-        ></v-text-field>
-
-        <span class="subheader">Dispositivo</span>
+        />
         <v-text-field
           class="mt-5"
           v-model="reparacion.deviceType"
@@ -142,9 +128,14 @@
       </v-form>
     </v-card-text>
     <v-card-actions>
-      <v-btn block color="info" @click="submitForm" :disabled="!validForm">{{
-        $props.reparacionId ? 'Actualizar' : 'Guardar'
-      }}</v-btn>
+      <v-btn
+        block
+        color="info"
+        @click="submitForm"
+        :disabled="!validForm"
+        class="d-print-none"
+        >{{ $props.reparacionId ? 'Actualizar' : 'Guardar' }}</v-btn
+      >
     </v-card-actions>
   </v-card>
 </template>
@@ -155,6 +146,8 @@ import { vForm } from '@/types'
 import { requiredRule } from '@/components/mixins'
 import { Reparacion, ReparacionData } from '@/entities'
 import VDateTimePicker from './DateTimePicker.vue'
+import VAutocompleteCliente from './VAutocompleteCliente.vue'
+
 @Component<FormReparacion>({
   name: 'FormReparacion',
   props: {
@@ -176,7 +169,8 @@ import VDateTimePicker from './DateTimePicker.vue'
     }
   },
   components: {
-    VDateTimePicker
+    VDateTimePicker,
+    VAutocompleteCliente
   }
 })
 export default class FormReparacion extends Vue {
@@ -222,13 +216,6 @@ export default class FormReparacion extends Vue {
 
   submitForm() {
     if (this.validate() && this.reparacion.valid()) {
-      const formKeys = Object.keys(this.reparacion) as Array<
-        keyof ReparacionData
-      >
-      formKeys.forEach(key => {
-        // @ts-ignore if we set or unset vars, those tend to be undefined, but 'undefined' doesn´t save on firestore and throws Error
-        if (this.reparacion[key] === undefined) this.reparacion[key] = null
-      })
       this.$emit('submit', Object.assign({}, this.reparacion))
     }
   }

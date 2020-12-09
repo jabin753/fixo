@@ -74,7 +74,6 @@ export default class ClienteDetails extends Vue {
     else return undefined
   }
   updateCliente(e: ClienteData) {
-    console.log('submit', e)
     this.$store.dispatch(
       'updateCliente',
       Object.assign({}, e, { updatedAt: new Date() })

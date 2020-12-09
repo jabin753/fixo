@@ -1,10 +1,13 @@
 import { Timestamp } from '@/plugins/firebase'
-import { ReparacionData, ReparacionFns } from './Reparacion.types'
-
+import { ClienteData } from './Cliente.types'
+import {
+  ReparacionData,
+  ReparacionFns,
+  ReparacionOptionalData
+} from './Reparacion.types'
 export class Reparacion implements ReparacionData, ReparacionFns {
   id?: string
-  name: string
-  phone: string
+  cliente: string | ClienteData
   deviceType: string
   deviceBrand?: string
   deviceModel?: string
@@ -22,8 +25,7 @@ export class Reparacion implements ReparacionData, ReparacionFns {
 
   constructor(
     reparacion: ReparacionData = {
-      name: '',
-      phone: '',
+      cliente: '',
       deviceType: '',
       details: '',
       isReviewed: false,
@@ -32,8 +34,7 @@ export class Reparacion implements ReparacionData, ReparacionFns {
     }
   ) {
     this.id = reparacion.id
-    this.name = reparacion.name
-    this.phone = reparacion.phone
+    this.cliente = reparacion.cliente
     this.deviceType = reparacion.deviceType
     this.deviceBrand = reparacion.deviceBrand || undefined
     this.deviceModel = reparacion.deviceModel || undefined
@@ -119,6 +120,10 @@ export class Reparacion implements ReparacionData, ReparacionFns {
     return 'Method not implemented yet'
   }
   valid(): boolean {
-    return this.name != ''
+    const keys = Object.keys(this) as Array<keyof ReparacionOptionalData>
+    keys.forEach(key => {
+      if (this[key] === undefined) delete this[key]
+    })
+    return true
   }
 }

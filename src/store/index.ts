@@ -1,4 +1,4 @@
-import { AuthUser, db } from '@/plugins/firebase'
+import { AuthUser, db, FieldValue } from '@/plugins/firebase'
 import { ReparacionData, ClienteData } from '@/entities'
 import Vue from 'vue'
 import Vuex from 'vuex'
@@ -43,14 +43,29 @@ export default new Vuex.Store<Store>({
         db.collection('reparaciones').doc(id)
       )
     }),
-    saveReparacion: firestoreAction((context, payload) => {
-      return db.collection('reparaciones').add(payload)
-    }),
-    updateReparacion: firestoreAction((context, payload) => {
+    saveReparacion: async (context, payload: ReparacionData) => {
+      const newReparacion = await db.collection('reparaciones').add({
+        ...payload,
+        cliente: db.collection('clientes').doc(payload.cliente as string)
+      })
+      await db
+        .collection('clientes')
+        .doc(payload.cliente as string)
+        .update({
+          reparaciones: FieldValue.arrayUnion(
+            db.collection('reparaciones').doc(newReparacion.id)
+          )
+        })
+    },
+    updateReparacion: firestoreAction((context, payload: ReparacionData) => {
+      const cliente = payload.cliente as ClienteData
       return db
         .collection('reparaciones')
         .doc(payload.id)
-        .update(payload)
+        .update({
+          ...payload,
+          cliente: db.collection('clientes').doc(cliente.id)
+        })
     }),
 
     bindClientesRef: firestoreAction(context => {

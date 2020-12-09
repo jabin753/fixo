@@ -45,7 +45,6 @@ import { auth, gAuth } from '@/plugins/firebase'
   beforeCreate() {
     setTimeout(() => {
       const user = this.$store.getters['currentUser']
-      console.log(user)
       if (user) {
         this.$router.push('/app')
       }

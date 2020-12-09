@@ -1,6 +1,6 @@
 <template>
   <v-app id="inspire">
-    <v-app-bar app color="white">
+    <v-app-bar app color="white" class="d-print-none">
       <v-img
         max-height="50"
         max-width="50"

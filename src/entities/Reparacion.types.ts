@@ -1,23 +1,25 @@
 import { Timestamp } from '@/plugins/firebase'
+import { ClienteData } from './Cliente.types'
 
-export interface ReparacionData {
+export interface ReparacionOptionalData {
   id?: string
-  name: string
-  phone: string
-  deviceType: string
   deviceBrand?: string
   deviceModel?: string
   deviceAttach?: string
-  details: string
-  isReviewed: boolean
-  tags: string[]
-  receiptDate: Date | Timestamp
   repairedDate?: Date | Timestamp
   deliveredDate?: Date | Timestamp
   cotizacionAdelanto?: boolean
   cotizacionPieza?: number
   cotizacionPiezaUrl?: string
   cotizacionPiezaCosto?: number
+}
+export interface ReparacionData extends ReparacionOptionalData {
+  cliente: string | ClienteData
+  deviceType: string
+  details: string
+  isReviewed: boolean
+  tags: string[]
+  receiptDate: Date | Timestamp
 }
 
 export interface ReparacionFns {

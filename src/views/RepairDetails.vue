@@ -3,11 +3,18 @@
     <v-row justify="center">
       <v-col :cols="$vuetify.breakpoint.lgAndUp ? 6 : 12">
         <v-sheet rounded="lg" v-if="reparacion">
-          <v-toolbar color="white" elevation="0">
+          <v-toolbar color="white" elevation="0" class="d-print-none">
             <v-icon @click="$router.go(-1)" left>mdi-arrow-left</v-icon>
             <v-toolbar-title>{{ reparacion.name }}</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn icon>
+            <v-btn
+              icon
+              @click="
+                () => {
+                  window.open().print()
+                }
+              "
+            >
               <v-icon>mdi-printer</v-icon>
             </v-btn>
             <v-dialog v-model="deleteConfirm" max-width="380">

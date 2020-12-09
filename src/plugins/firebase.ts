@@ -18,7 +18,9 @@ const firebaseConfig = {
 const firebaseInstance = firebase.initializeApp(firebaseConfig)
 export const db = firebaseInstance.firestore()
 export const auth = firebaseInstance.auth()
+export const FieldValue = firebase.firestore.FieldValue
 export type CollectionReference<T> = firebase.firestore.CollectionReference<T>
+export type DocumentReference<T> = firebase.firestore.DocumentReference<T>
 export const gAuth = firebase.auth.GoogleAuthProvider
 
 export type Timestamp = firebase.firestore.Timestamp
