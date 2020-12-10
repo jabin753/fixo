@@ -3,6 +3,7 @@ import { ReparacionData, ClienteData } from '@/entities'
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { vuexfireMutations, firestoreAction } from 'vuexfire'
+import { snackbar } from './snackbar'
 Vue.use(Vuex)
 type Store = {
   reparaciones: ReparacionData[]
@@ -101,5 +102,8 @@ export default new Vuex.Store<Store>({
     clientes: state => state.clientes,
     clientesById: state => (id: string) =>
       state.clientes.find(cliente => cliente.id === id)
+  },
+  modules: {
+    snackbar
   }
 })

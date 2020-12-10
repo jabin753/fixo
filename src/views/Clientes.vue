@@ -1,12 +1,5 @@
 <template>
   <v-container>
-    <v-snackbar
-      :timeout="-1"
-      :value="snackNotification"
-      color="success darken-2"
-      dark
-    >
-    </v-snackbar>
     <v-row justify="center">
       <v-slide-x-transition>
         <v-col cols="2" v-if="$vuetify.breakpoint.lgAndUp" class="red--text">
@@ -160,16 +153,18 @@
 <script lang="ts">
 import { Cliente, ClienteData } from '@/entities'
 import { vForm } from '@/types'
-import Vue from 'vue'
 import ClienteItem from '@/components/ClienteItem.vue'
 import FormCliente from '@/components/formCliente.vue'
-import Component from 'vue-class-component'
+import Component, { mixins } from 'vue-class-component'
+import { VSnackbarMixin } from '@/components/mixins'
+const Vue = mixins(VSnackbarMixin)
 @Component<ClientesLayout>({
   name: 'ClientePage',
   components: {
     ClienteItem,
     FormCliente
   },
+  mixins: [VSnackbarMixin],
   mounted() {
     if (this.clientes.length == 0) {
       this.$store.dispatch('bindClientesRef').then(() => {
@@ -195,12 +190,11 @@ export default class ClientesLayout extends Vue {
 
   addClienteDialog = false
 
-  snackNotification = false
-
   // Add cliente to array
   addCliente(e: ClienteData): void {
     this.$store.dispatch('saveCliente', e).then(() => {
-      this.snackNotification = true
+      // message toast here
+      this.$toast('Cliente agregado', { color: 'green lighten-2' })
       this.addClienteDialog = false
       this.$nextTick(() => this.$refs.form.reset())
     })

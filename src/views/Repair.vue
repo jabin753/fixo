@@ -1,13 +1,5 @@
 <template>
   <v-container>
-    <v-snackbar
-      :timeout="5000"
-      :value="snackNotification"
-      color="success darken-2"
-      dark
-    >
-      <span>Guardado correctamente</span>
-    </v-snackbar>
     <v-row>
       <v-slide-x-transition>
         <v-col cols="2" v-if="$vuetify.breakpoint.lgAndUp" class="red--text">
@@ -141,7 +133,7 @@
                   </v-row>
                 </template>
 
-                <template #no-data >
+                <template #no-data>
                   <div class="d-flex align-center justify-center ma-5">
                     <v-btn
                       color="blue lighten-2"
@@ -176,19 +168,21 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import Component from 'vue-class-component'
+import Component, { mixins } from 'vue-class-component'
 import RepairItem from '@/components/RepairItem.vue'
 import FormReparacion from '@/components/formReparacion.vue'
 import { vForm } from '@/types'
 import { Reparacion, ReparacionData } from '@/entities'
-
+import { VSnackbarMixin } from '@/components/mixins'
+VSnackbarMixin
+const Vue = mixins(VSnackbarMixin)
 @Component<MainLayout>({
   name: 'RepairPage',
   components: {
     RepairItem,
     FormReparacion
   },
+  mixins: [VSnackbarMixin],
   mounted() {
     if (this.reparaciones.length == 0) {
       this.$store.dispatch('bindReparacionesRef').then(() => {
@@ -222,12 +216,10 @@ export default class MainLayout extends Vue {
 
   addRepairDialog = false
 
-  snackNotification = false
-
   // Add reparación to array
   addReparacion(e: ReparacionData): void {
     this.$store.dispatch('saveReparacion', e).then(() => {
-      this.snackNotification = true
+      this.$toast('Reparación agregada')
       this.addRepairDialog = false
       this.$nextTick(() => this.$refs.form.reset())
     })
