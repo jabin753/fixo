@@ -29,5 +29,5 @@ export const pdf = functions.https.onRequest(async (req, res) => {
   })
 
   const pdfBytes = await pdfDoc.save()
-  res.type("aplication/pdf").send(Buffer.from(pdfBytes))
+  res.type("application/pdf").send(Buffer.from(pdfBytes))
 })
