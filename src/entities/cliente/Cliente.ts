@@ -1,5 +1,5 @@
-import { ClienteData, ClienteFns, ClienteOptionalData } from './Cliente.types'
-import { ReparacionData } from './Reparacion.types'
+import { ClienteData, ClienteFns, ClienteOptionalData } from '.'
+import { ReparacionData } from '../Reparacion.types'
 
 export class Cliente implements ClienteData, ClienteFns {
   id?: string

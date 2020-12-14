@@ -1,5 +1,5 @@
 import { Timestamp } from '@/plugins/firebase'
-import { ClienteData } from './Cliente.types'
+import { ClienteData } from './cliente'
 
 export interface ReparacionOptionalData {
   id?: string
