@@ -1,5 +1,5 @@
 import { Timestamp } from '@/plugins/firebase'
-import { ClienteData } from './cliente'
+import { ClienteData } from '../cliente'
 import {
   ReparacionData,
   ReparacionFns,
@@ -130,6 +130,6 @@ export class Reparacion implements ReparacionData, ReparacionFns {
     keys.forEach(key => {
       if (this[key] === undefined) delete this[key]
     })
-    return true
+    return this.cliente != ''
   }
 }
