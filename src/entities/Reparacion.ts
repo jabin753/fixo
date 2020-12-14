@@ -9,6 +9,7 @@ export class Reparacion implements ReparacionData, ReparacionFns {
   id?: string
   cliente: string | ClienteData
   deviceType: string
+  deviceSN: string
   deviceBrand?: string
   deviceModel?: string
   deviceAttach?: string
@@ -27,6 +28,10 @@ export class Reparacion implements ReparacionData, ReparacionFns {
     reparacion: ReparacionData = {
       cliente: '',
       deviceType: '',
+      deviceSN: Math.random()
+        .toString(36)
+        .substr(2, 9)
+        .toUpperCase(),
       details: '',
       isReviewed: false,
       tags: [],
@@ -36,6 +41,7 @@ export class Reparacion implements ReparacionData, ReparacionFns {
     this.id = reparacion.id
     this.cliente = reparacion.cliente
     this.deviceType = reparacion.deviceType
+    this.deviceSN = reparacion.deviceSN
     this.deviceBrand = reparacion.deviceBrand || undefined
     this.deviceModel = reparacion.deviceModel || undefined
     this.deviceAttach = reparacion.deviceAttach || undefined

@@ -16,6 +16,7 @@ export interface ReparacionOptionalData {
 export interface ReparacionData extends ReparacionOptionalData {
   cliente: string | ClienteData
   deviceType: string
+  deviceSN: string
   details: string
   isReviewed: boolean
   tags: string[]

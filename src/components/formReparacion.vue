@@ -41,17 +41,25 @@
               ></v-expansion-panel-header
             >
             <v-expansion-panel-content>
-              <v-row>
-                <v-col cols="6">
+              <v-row no-gutters>
+                <v-col cols="12" md="6" lg="5">
                   <v-text-field
                     label="Marca"
                     v-model="reparacion.deviceBrand"
                   ></v-text-field>
                 </v-col>
-                <v-col cols="6">
+                <v-col cols="12" md="6" lg="5">
                   <v-text-field
                     label="Modelo"
                     v-model="reparacion.deviceModel"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" md="6" offset-md="6" lg="2" offset-lg="0">
+                  <v-text-field
+                    label="NS"
+                    v-model="reparacion.deviceSN"
+                    append-outer-icon="mdi-plus"
+                    @click:append-outer.prevent="randomSN"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
@@ -218,6 +226,13 @@ export default class FormReparacion extends Vue {
     if (this.validate() && this.reparacion.valid()) {
       this.$emit('submit', Object.assign({}, this.reparacion))
     }
+  }
+
+  randomSN(): void {
+    this.reparacion.deviceSN = Math.random()
+      .toString(36)
+      .substr(2, 9)
+      .toUpperCase()
   }
 }
 </script>
