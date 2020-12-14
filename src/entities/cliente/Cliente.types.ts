@@ -1,4 +1,4 @@
-import { ReparacionData } from './Reparacion.types'
+import { ReparacionData } from '../Reparacion.types'
 
 export interface ClienteOptionalData {
   id?: string
