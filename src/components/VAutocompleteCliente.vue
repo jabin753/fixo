@@ -42,10 +42,10 @@
 <script lang="ts">
 import { ClienteData } from '@/entities'
 import { vForm } from '@/types'
-import Vue from 'vue'
-import Component from 'vue-class-component'
+import Component, { mixins } from 'vue-class-component'
 import FormCliente from './formCliente.vue'
-
+import { VSnackbarMixin } from './mixins'
+const Vue = mixins(VSnackbarMixin)
 @Component<VAutocompleteCliente>({
   name: 'v-autocomplete-cliente',
   created() {
@@ -53,6 +53,7 @@ import FormCliente from './formCliente.vue'
       this.$store.dispatch('bindClientesRef')
     }
   },
+  mixins: [VSnackbarMixin],
   props: {
     rules: {
       type: Array
@@ -92,6 +93,7 @@ export default class VAutocompleteCliente extends Vue {
   // Add cliente to array
   addCliente(e: ClienteData): void {
     this.$store.dispatch('saveCliente', e).then(newCliente => {
+      this.$toast('cliente agregado')
       this.clienteId = newCliente.id
       this.addClienteDialog = false
     })

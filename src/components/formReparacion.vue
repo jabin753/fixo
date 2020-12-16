@@ -141,6 +141,7 @@
         color="info"
         @click="submitForm"
         :disabled="!validForm"
+        :loading="loadingBtn"
         class="d-print-none"
         >{{ $props.reparacionId ? 'Actualizar' : 'Guardar' }}</v-btn
       >
@@ -165,6 +166,11 @@ import VAutocompleteCliente from './VAutocompleteCliente.vue'
     modal: Boolean,
     // if id is given, then it'll update data
     reparacionId: String
+  },
+  watch: {
+    '$store.state.snackbar.isVisible'(snackResponse: boolean) {
+      if (snackResponse) this.loadingBtn = false
+    }
   },
   created() {
     if (this.$props.reparacionId) {
@@ -224,9 +230,11 @@ export default class FormReparacion extends Vue {
 
   submitForm() {
     if (this.validate() && this.reparacion.valid()) {
+      this.loadingBtn = true
       this.$emit('submit', Object.assign({}, this.reparacion))
     }
   }
+  loadingBtn = false
 
   randomSN(): void {
     this.reparacion.deviceSN = Math.random()

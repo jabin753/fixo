@@ -61,13 +61,14 @@
 
 <script lang="ts">
 import { Reparacion, ReparacionData } from '@/entities'
-import Vue from 'vue'
-import Component from 'vue-class-component'
+import Component, { mixins } from 'vue-class-component'
 import FormReparacion from '@/components/formReparacion.vue'
 import { db } from '@/plugins/firebase'
-
+import { VSnackbarMixin } from '@/components/mixins'
+const Vue = mixins(VSnackbarMixin)
 @Component<RepairItem>({
   name: 'RepairDetails',
+  mixins: [VSnackbarMixin],
   mounted() {
     if (!this.reparacion) {
       this.$store.dispatch('bindReparacionesRef')
@@ -86,10 +87,14 @@ export default class RepairItem extends Vue {
     else return undefined
   }
   updateReparacion(e: ReparacionData): void {
-    this.$store.dispatch(
-      'updateReparacion',
-      Object.assign({}, e, { updatedAt: new Date() })
-    )
+    this.$store
+      .dispatch(
+        'updateReparacion',
+        Object.assign({}, e, { updatedAt: new Date() })
+      )
+      .then(() => {
+        this.$toast('Reparación actualizada')
+      })
   }
   deleteReparacion(): void {
     db.collection('reparaciones')
