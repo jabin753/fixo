@@ -1,5 +1,7 @@
+import { Cliente } from './Cliente'
 import { ClienteData } from './Cliente.types'
-const clientes: Array<ClienteData> = [
+
+export const mockClientesData = (): ClienteData[] => [
   {
     id: 'n7KYnt8vJjCH8Us6ftDN',
     nombre: 'Juan Pedro',
@@ -14,5 +16,6 @@ const clientes: Array<ClienteData> = [
   }
 ]
 
-export const single = clientes[0]
-export const all = clientes
+export const mockClientes = (
+  data: ClienteData[] = mockClientesData()
+): Cliente[] => data.map(cliente => new Cliente(cliente))

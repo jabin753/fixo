@@ -1,5 +1,6 @@
-import { single } from './Cliente.mock'
+import { mockClientesData } from './Cliente.mock'
 import { Cliente } from './Cliente'
+const single = mockClientesData()[0]
 
 describe('Instancia de cliente', () => {
   test('Con argumentos', () => {
