@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "build": "vue-cli-service build",
-    "test:unit": "vue-cli-service test:unit",
+    "firebase": "firebase emulators:start --import=./firebase-data --export-on-exit",
     "lint": "vue-cli-service lint",
-    "serve:firestore": "firebase emulators:start --only firestore",
-    "serve:ui": "vue-cli-service serve"
+    "serve": "vue-cli-service serve",
+    "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
     "core-js": "^3.6.5",
