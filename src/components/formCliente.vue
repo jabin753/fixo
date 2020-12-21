@@ -34,9 +34,14 @@
       </v-form>
     </v-card-text>
     <v-card-actions>
-      <v-btn block color="info" @click="submitForm" :disabled="!validForm">{{
-        $props.clienteId ? 'Actualizar' : 'Guardar'
-      }}</v-btn>
+      <v-btn
+        block
+        color="info"
+        @click="submitForm"
+        :disabled="!validForm"
+        :loading="loadingBtn"
+        >{{ $props.clienteId ? 'Actualizar' : 'Guardar' }}</v-btn
+      >
     </v-card-actions>
   </v-card>
 </template>
@@ -58,6 +63,11 @@ import { requiredRule } from './mixins'
     initName: {
       type: String,
       default: ''
+    }
+  },
+  watch: {
+    '$store.state.snackbar.isVisible'(snackResponse: boolean) {
+      if (snackResponse) this.loadingBtn = false
     }
   },
   mounted() {
@@ -104,8 +114,11 @@ export default class FormCliente extends Vue {
 
   submitForm() {
     if (this.validate() && this.cliente.valid()) {
+      this.loadingBtn = true
       this.$emit('submit', Object.assign({}, this.cliente))
     }
   }
+
+  loadingBtn = false
 }
 </script>

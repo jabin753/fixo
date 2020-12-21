@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 import App from '@/App.vue'
-import store from '@/store'
+import { Store } from '@/store'
 import { AuthUser } from '@/plugins/firebase'
 
 Vue.use(VueRouter)
@@ -58,28 +58,31 @@ const routes: Array<RouteConfig> = [
     ]
   }
 ]
+
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
 })
 
-router.beforeEach((to, from, next) => {
-  // Using delay because store doesn't retrieve user info soon
-  setTimeout(
-    () => {
-      const user = store.getters['currentUser'] as AuthUser
-      if (to.meta.requireAuth) {
-        if (user) {
-          next()
-        } else {
-          router.push({ name: 'LoginPage' })
+export const makeRouter = (store: Store): VueRouter => {
+  // Guards
+  router.beforeEach((to, from, next) => {
+    // Using delay because store doesn't retrieve user info soon
+    setTimeout(
+      () => {
+        const user = store.getters['currentUser'] as AuthUser
+        if (to.meta.requireAuth) {
+          if (user) {
+            next()
+          } else {
+            router.push({ name: 'LoginPage' })
+          }
         }
-      }
-      next()
-    },
-    from.path == '/' ? 500 : 0
-  )
-})
-
-export default router
+        next()
+      },
+      from.path == '/' ? 500 : 0
+    )
+  })
+  return router
+}

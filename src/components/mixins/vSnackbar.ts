@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import { stateSnackbar } from '@/store/snackbar'
+import { SnackbarState } from '@/store'
 
 @Component
 export class VSnackbarMixin extends Vue {
-  $toast(message: stateSnackbar['text'], options: Partial<stateSnackbar> = {}) {
+  $toast(message: SnackbarState['text'], options: Partial<SnackbarState> = {}) {
     this.$store.commit('snackbar/MESSAGE', { ...options, text: message })
   }
 }

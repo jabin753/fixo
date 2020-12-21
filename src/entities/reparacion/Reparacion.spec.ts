@@ -1,5 +1,8 @@
 import { Reparacion } from './Reparacion'
-import { single } from './Reparacion.mock'
+import { mockReparacionesData } from './Reparacion.mock'
+
+const single = mockReparacionesData()[0]
+
 describe('Instancia', () => {
   test('Con argumento', () => {
     const reparacion = new Reparacion(single)

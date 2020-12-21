@@ -1,9 +1,11 @@
 import { ReparacionData } from './Reparacion.types'
-import { all as clientes } from '../cliente'
-const reparaciones: Array<ReparacionData> = [
+import { mockClientesData } from '../cliente'
+import { Reparacion } from './Reparacion'
+
+export const mockReparacionesData = (): ReparacionData[] => [
   {
     id: 'n7KYnt8vJjCH8Us6ftFF',
-    cliente: clientes[0],
+    cliente: mockClientesData()[0],
     details: 'Mantenimiento de Xbox',
     deviceSN: 'EUJO324HU2',
     deviceType: 'Consola',
@@ -13,7 +15,7 @@ const reparaciones: Array<ReparacionData> = [
   },
   {
     id: 'bf1LVn1JDDU79FOcOGkZ',
-    cliente: clientes[1],
+    cliente: mockClientesData()[1],
     details: 'Cambiar touch',
     deviceSN: 'SAAJFIE7519',
     deviceType: 'Celular',
@@ -32,5 +34,6 @@ const reparaciones: Array<ReparacionData> = [
   }
 ]
 
-export const single = reparaciones[0]
-export const all = reparaciones
+export const mockReparaciones = (
+  data: ReparacionData[] = mockReparacionesData()
+): Reparacion[] => data.map(reparacion => new Reparacion(reparacion))
