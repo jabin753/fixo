@@ -1,0 +1,74 @@
+<template>
+  <v-autocomplete
+    v-model="deviceModel"
+    label="Modelo"
+    :items="deviceModels"
+    item-text="modelo"
+    item-value="modelo"
+    clearable
+    :rules="rules"
+    :loading="loading"
+    @update:search-input="inputField = $event"
+  >
+    <template #no-data>
+      <div class="d-flex justify-end">
+        <v-btn text @click="newDeviceModel">Agregar {{ inputField }}</v-btn>
+      </div>
+    </template>
+  </v-autocomplete>
+</template>
+
+<script lang="ts">
+import Vue from 'vue'
+import Component from 'vue-class-component'
+import { db } from '@/plugins/firebase'
+
+const deviceModels = db.collection('modeloDispositivo')
+@Component<VAutocompleteDeviceType>({
+  name: 'v-autocomplete-device-type',
+  model: {
+    prop: 'deviceModel',
+    event: 'change'
+  },
+  props: {
+    brand: {
+      type: String
+    },
+    rules: {
+      type: Array
+    }
+  },
+  watch: {
+    brand: {
+      handler(brand: string) {
+        this.$bind('deviceModels', deviceModels.where('marca', '==', brand))
+      },
+      immediate: true
+    }
+  }
+})
+export default class VAutocompleteDeviceType extends Vue {
+  loading = false
+  inputField = ''
+  deviceModels = []
+
+  // v-model
+  get deviceModel() {
+    return this.$attrs.deviceModel
+  }
+  set deviceModel(deviceModel: string) {
+    this.$emit('change', deviceModel)
+  }
+
+  newDeviceModel() {
+    this.loading = true
+
+    db.collection('modeloDispositivo')
+      .add({ modelo: this.inputField, marca: this.$props.brand })
+      .then(() => {
+        this.loading = false
+        this.deviceModel = this.inputField
+      })
+  }
+}
+</script>
