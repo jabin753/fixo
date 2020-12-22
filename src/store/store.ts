@@ -14,12 +14,7 @@ export const makeStore = (db: Firestore): Store<State> =>
     state: {
       clientes: [],
       currentUser: null,
-      reparaciones: [],
-      snackbar: {
-        color: '',
-        isVisible: false,
-        text: ''
-      }
+      reparaciones: []
     },
     actions: prepareActions(db),
     mutations,
