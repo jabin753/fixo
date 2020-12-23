@@ -10,9 +10,9 @@
     :loading="loading"
     @update:search-input="inputField = $event"
   >
-    <template #no-data>
+    <template #no-data v-if="inputField">
       <div class="d-flex justify-end">
-        <v-btn text @click="newDeviceModel">Agregar {{ inputField }}</v-btn>
+        <v-btn text @click="newDeviceModel">Nuevo modelo</v-btn>
       </div>
     </template>
   </v-autocomplete>
@@ -41,7 +41,11 @@ const deviceModels = db.collection('modeloDispositivo')
   watch: {
     brand: {
       handler(brand: string) {
-        this.$bind('deviceModels', deviceModels.where('marca', '==', brand))
+        this.loading = true
+        this.$bind(
+          'deviceModels',
+          deviceModels.where('marca', '==', brand)
+        ).then(() => (this.loading = false))
       },
       immediate: true
     }

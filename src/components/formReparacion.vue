@@ -46,7 +46,7 @@
             >
             <v-expansion-panel-content>
               <v-row no-gutters>
-                <v-col cols="12" md="6" lg="5">
+                <v-col cols="12" md="6">
                   <!-- <v-text-field
                     label="Marca"
                     v-model="reparacion.deviceBrand"
@@ -55,7 +55,7 @@
                     v-model="reparacion.deviceBrand"
                   ></v-autocomplete-device-brand>
                 </v-col>
-                <v-col cols="12" md="6" lg="5">
+                <v-col cols="12" md="6">
                   <!-- <v-text-field
                     label="Modelo"
                     v-model="reparacion.deviceModel"
@@ -66,7 +66,7 @@
                     :brand="reparacion.deviceBrand"
                   ></v-autocomplete-device-model>
                 </v-col>
-                <v-col cols="12" md="6" offset-md="6" lg="2" offset-lg="0">
+                <v-col cols="8" md="6">
                   <v-text-field
                     label="NS"
                     v-model="reparacion.deviceSN"

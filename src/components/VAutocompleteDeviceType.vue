@@ -12,9 +12,9 @@
     :loading="loading"
     @update:search-input="inputField = $event"
   >
-    <template #no-data>
+    <template #no-data v-if="inputField">
       <div class="d-flex justify-end">
-        <v-btn text @click="newDeviceType">Agregar {{ inputField }}</v-btn>
+        <v-btn text @click="newDeviceType">Nuevo dispositivo</v-btn>
       </div>
     </template>
   </v-autocomplete>
