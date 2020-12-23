@@ -9,9 +9,11 @@ export interface ReparacionOptionalData {
   repairedDate?: Date | Timestamp
   deliveredDate?: Date | Timestamp
   cotizacionAdelanto?: boolean
+  cotizacionCosto?: number
   cotizacionPieza?: number
   cotizacionPiezaUrl?: string
   cotizacionPiezaCosto?: number
+  tipo: string
 }
 export interface ReparacionData extends ReparacionOptionalData {
   cliente: string | ClienteData

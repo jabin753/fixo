@@ -29,6 +29,7 @@
           :rules="[requiredRule]"
         ></v-autocomplete-device-type>
         <v-textarea
+          :disabled="!$props.create"
           flat
           auto-grow
           v-model="reparacion.details"
@@ -122,25 +123,57 @@
               ></v-expansion-panel-header
             >
             <v-expansion-panel-content>
-              <v-text-field
-                label="Adelanto"
-                prepend-icon="mdi-currency-usd"
-                type="number"
-                v-model="reparacion.cotizacionAdelanto"
-              ></v-text-field>
-              <v-select
+              <v-radio-group
+                v-model="reparacion.tipo"
+                :disabled="!$props.create"
+                column
+                dense
+                :rules="[requiredRule]"
+              >
+                <span>Acción a tomar: <br /></span>
+                <v-radio label="Revisión" value="revision" />
+                <v-radio label="Cambio de pieza" value="cambioPieza" />
+                <v-radio
+                  label="Mantenimiento Preventivo"
+                  value="mantoPreventivo"
+                />
+                <v-radio
+                  label="Mantenimiento Correctivo"
+                  value="mantoCorrectivo"
+                />
+              </v-radio-group>
+              <v-combobox
+                v-if="reparacion.tipo && reparacion.tipo == 'cambioPieza'"
                 :items="tipoPiezasList"
                 label="Tipo de Pieza a conseguir"
                 clearable
                 v-model="reparacion.cotizacionPieza"
-              ></v-select>
+              ></v-combobox>
               <v-text-field
-                label="Costo"
+                v-if="
+                  reparacion.tipo &&
+                    reparacion.tipo == 'cambioPieza' &&
+                    reparacion.cotizacionPieza != null
+                "
+                label="Costo de la pieza"
                 type="number"
                 class="ml-3"
                 prepend-icon="mdi-currency-usd"
-                v-if="reparacion.cotizacionPieza != null"
                 v-model="reparacion.cotizacionPiezaCosto"
+              ></v-text-field>
+              <v-text-field
+                v-if="reparacion.tipo"
+                label="Costo Total"
+                type="number"
+                prepend-icon="mdi-currency-usd"
+                v-model="reparacion.cotizacionCosto"
+              ></v-text-field>
+              <v-text-field
+                v-if="reparacion.tipo && reparacion.tipo != 'revision'"
+                label="Adelanto"
+                prepend-icon="mdi-currency-usd"
+                type="number"
+                v-model="reparacion.cotizacionAdelanto"
               ></v-text-field>
             </v-expansion-panel-content>
           </v-expansion-panel>
@@ -218,13 +251,7 @@ export default class FormReparacion extends Vue {
     { text: 'Consola', value: 'console' },
     { text: 'Otro dispositivo', value: 'other' }
   ]
-  tipoPiezasList = [
-    'Flexor',
-    'Pantalla',
-    'Centro de Carga',
-    'Consola de Videojuego',
-    'Otro'
-  ]
+  tipoPiezasList = ['Flexor', 'Pantalla', 'Centro de Carga']
   reparacion: Reparacion = new Reparacion()
 
   panels = []

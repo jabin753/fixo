@@ -10,6 +10,7 @@ export const mockReparacionesData = (): ReparacionData[] => [
     deviceSN: 'EUJO324HU2',
     deviceType: 'Consola',
     tags: ['Consola', 'Xbox', 'Mantenimiento'],
+    tipo: 'revision',
     isReviewed: false,
     receiptDate: new Date()
   },
@@ -22,6 +23,7 @@ export const mockReparacionesData = (): ReparacionData[] => [
     isReviewed: true,
     receiptDate: new Date('2020/12/10'),
     tags: ['Celular', 'Huawei', 'Pantalla'],
+    tipo: 'cambioPieza',
     deviceBrand: 'Huawei',
     deviceModel: 'ASDF232',
     deviceAttach: 'Cargador original',

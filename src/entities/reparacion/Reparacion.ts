@@ -16,10 +16,12 @@ export class Reparacion implements ReparacionData, ReparacionFns {
   details: string
   isReviewed: boolean
   tags: string[]
+  tipo: string
   receiptDate: Date
   repairedDate?: Date
   deliveredDate?: Date
   cotizacionAdelanto?: boolean
+  cotizacionCosto?: number
   cotizacionPieza?: number
   cotizacionPiezaUrl?: string
   cotizacionPiezaCosto?: number
@@ -35,6 +37,7 @@ export class Reparacion implements ReparacionData, ReparacionFns {
       details: '',
       isReviewed: false,
       tags: [],
+      tipo: '',
       receiptDate: new Date()
     }
   ) {
@@ -48,12 +51,14 @@ export class Reparacion implements ReparacionData, ReparacionFns {
     this.details = reparacion.details
     this.isReviewed = reparacion.isReviewed
     this.tags = reparacion.tags
+    this.tipo = reparacion.tipo
     this.receiptDate = this.setterDate(reparacion.receiptDate)
     if (reparacion.repairedDate)
       this.repairedDate = this.setterDate(reparacion.repairedDate)
     if (reparacion.deliveredDate)
       this.deliveredDate = this.setterDate(reparacion.deliveredDate)
     this.cotizacionAdelanto = reparacion.cotizacionAdelanto || undefined
+    this.cotizacionCosto = reparacion.cotizacionCosto || undefined
     this.cotizacionPieza = reparacion.cotizacionPieza || undefined
     this.cotizacionPiezaUrl = reparacion.cotizacionPiezaUrl || undefined
     this.cotizacionPiezaCosto = reparacion.cotizacionPiezaCosto || undefined
