@@ -6,7 +6,6 @@ import VueRouter from 'vue-router'
 
 // Singleton Pattern
 let firebaseInstance: firebase.app.App | null = null
-console.log(process.env)
 export const prepareFirebase = (): firebase.app.App => {
   if (!firebaseInstance) {
     const firebaseConfig = {
