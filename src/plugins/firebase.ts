@@ -6,18 +6,18 @@ import VueRouter from 'vue-router'
 
 // Singleton Pattern
 let firebaseInstance: firebase.app.App | null = null
-
+console.log(process.env)
 export const prepareFirebase = (): firebase.app.App => {
   if (!firebaseInstance) {
     const firebaseConfig = {
-      apiKey: 'AIzaSyCUy5MzaUTVHRp7-xdkfMDerchD96O18SI',
-      authDomain: 'updownpv.firebaseapp.com',
-      databaseURL: 'https://updownpv.firebaseio.com',
-      projectId: 'updownpv',
-      storageBucket: 'updownpv.appspot.com',
-      messagingSenderId: '579913870267',
-      appId: '1:579913870267:web:bd08d8065b9cc7e4beb29e',
-      measurementId: 'G-13KYD5F14Y'
+      apiKey: process.env.VUE_APP_API_KEY,
+      authDomain: process.env.VUE_APP_AUTH_DOMAIN,
+      databaseURL: process.env.VUE_APP_DATABASE_URL,
+      projectId: process.env.VUE_APP_PROJECT_ID,
+      storageBucket: process.env.VUE_APP_STORAGE_BUCKET,
+      messagingSenderId: process.env.VUE_APP_MESSAGING_SENDER_ID,
+      appId: process.env.VUE_APP_APP_ID,
+      measurementId: process.env.VUE_APP_MEASUREMENT_ID
     }
 
     // Get a Firestore instance
