@@ -82,7 +82,9 @@ export default class ClienteDetails extends Vue {
 
   deleteConfirm = false
   deleteCliente() {
-    db.collection('clientes')
+    db.collection('users')
+      .doc(this.$store.getters['currentUser'].uid)
+      .collection('clientes')
       .doc(this.id)
       .delete()
     this.$router.go(-1)

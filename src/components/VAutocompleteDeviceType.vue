@@ -31,8 +31,13 @@ import { db } from '@/plugins/firebase'
     prop: 'deviceType',
     event: 'change'
   },
-  firestore: {
-    deviceTypes: db.collection('tipoDispositivo')
+  firestore() {
+    return {
+      deviceTypes: db
+        .collection('users')
+        .doc(this.$store.getters['currentUser'].uid)
+        .collection('tipoDispositivo')
+    }
   },
   props: {
     rules: {
@@ -56,7 +61,9 @@ export default class VAutocompleteDeviceType extends Vue {
   newDeviceType() {
     this.loading = true
 
-    db.collection('tipoDispositivo')
+    db.collection('users')
+      .doc(this.$store.getters['currentUser'].uid)
+      .collection('tipoDispositivo')
       .add({ tipo: this.inputField })
       .then(() => {
         this.loading = false

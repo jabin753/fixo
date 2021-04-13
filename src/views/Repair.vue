@@ -174,6 +174,7 @@ import FormReparacion from '@/components/formReparacion.vue'
 import { vForm } from '@/types'
 import { Reparacion, ReparacionData } from '@/entities'
 import { VSnackbarMixin } from '@/components/mixins'
+import { db } from '@/plugins/firebase'
 VSnackbarMixin
 const Vue = mixins(VSnackbarMixin)
 @Component<MainLayout>({

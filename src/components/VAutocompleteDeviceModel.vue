@@ -23,12 +23,19 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import { db } from '@/plugins/firebase'
 
-const deviceModels = db.collection('modeloDispositivo')
 @Component<VAutocompleteDeviceType>({
   name: 'v-autocomplete-device-type',
   model: {
     prop: 'deviceModel',
     event: 'change'
+  },
+  firestore() {
+    return {
+      deviceModels: db
+        .collection('users')
+        .doc(this.$store.getters['currentUser'].uid)
+        .collection('modeloDispositivo')
+    }
   },
   props: {
     brand: {
@@ -44,7 +51,11 @@ const deviceModels = db.collection('modeloDispositivo')
         this.loading = true
         this.$bind(
           'deviceModels',
-          deviceModels.where('marca', '==', brand)
+          db
+            .collection('users')
+            .doc(this.$store.getters['currentUser'].uid)
+            .collection('modeloDispositivo')
+            .where('marca', '==', brand)
         ).then(() => (this.loading = false))
       },
       immediate: true
@@ -67,7 +78,9 @@ export default class VAutocompleteDeviceType extends Vue {
   newDeviceModel() {
     this.loading = true
 
-    db.collection('modeloDispositivo')
+    db.collection('users')
+      .doc(this.$store.getters['currentUser'].uid)
+      .collection('modeloDispositivo')
       .add({ modelo: this.inputField, marca: this.$props.brand })
       .then(() => {
         this.loading = false
