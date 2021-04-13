@@ -10,64 +10,110 @@ export const prepareActions = (db: Firestore): Actions => ({
   FIREBASE_LOGOUT: ({ commit }) => {
     commit('LOGOUT_USER')
   },
-  bindReparacionesRef: firestoreAction(({ bindFirestoreRef }) => {
+  bindReparacionesRef: firestoreAction(({ bindFirestoreRef, getters }) => {
+    const reparacionesRef = db
+      .collection('users')
+      .doc(getters['currentUser'].uid)
+      .collection('reparaciones')
+      .orderBy('receiptDate', 'desc')
+    return bindFirestoreRef('reparaciones', reparacionesRef)
+  }),
+  fetchReparacionById: firestoreAction(({ bindFirestoreRef, getters }, id) => {
     return bindFirestoreRef(
       'reparaciones',
-      db.collection('reparaciones').orderBy('receiptDate', 'desc')
+      db
+        .collection('users')
+        .doc(getters['currentUser'].uid)
+        .collection('reparaciones')
+        .doc(id)
     )
   }),
-  fetchReparacionById: firestoreAction((context, id) => {
-    return context.bindFirestoreRef(
-      'reparaciones',
-      db.collection('reparaciones').doc(id)
-    )
-  }),
-  saveReparacion: async (context, payload: ReparacionData) => {
-    const newReparacion = await db.collection('reparaciones').add({
-      ...payload,
-      cliente: db.collection('clientes').doc(payload.cliente as string)
-    })
+  saveReparacion: async ({ getters }, payload: ReparacionData) => {
+    const newReparacion = await db
+      .collection('users')
+      .doc(getters['currentUser'].uid)
+      .collection('reparaciones')
+      .add({
+        ...payload,
+        cliente: db
+          .collection('users')
+          .doc(getters['currentUser'].uid)
+          .collection('clientes')
+          .doc(payload.cliente as string)
+      })
     await db
+      .collection('users')
+      .doc(getters['currentUser'].uid)
       .collection('clientes')
       .doc(payload.cliente as string)
       .update({
         reparaciones: FieldValue.arrayUnion(
-          db.collection('reparaciones').doc(newReparacion.id)
+          db
+            .collection('users')
+            .doc(getters['currentUser'].uid)
+            .collection('reparaciones')
+            .doc(newReparacion.id)
         )
       })
   },
-  updateReparacion: (context, payload: ReparacionData) => {
+  updateReparacion: ({ getters }, payload: ReparacionData) => {
     const cliente = payload.cliente as ClienteData
     return db
+      .collection('users')
+      .doc(getters['currentUser'].uid)
       .collection('reparaciones')
       .doc(payload.id)
       .update({
         ...payload,
-        cliente: db.collection('clientes').doc(cliente.id)
+        cliente: db
+          .collection('users')
+          .doc(getters['currentUser'].uid)
+          .collection('clientes')
+          .doc(cliente.id)
       })
   },
 
-  bindClientesRef: firestoreAction(({ bindFirestoreRef }) => {
-    return bindFirestoreRef('clientes', db.collection('clientes'))
-  }),
-  fetchClientesById: firestoreAction((context, id) => {
-    return context.bindFirestoreRef(
+  bindClientesRef: firestoreAction(({ bindFirestoreRef, getters }) => {
+    return bindFirestoreRef(
       'clientes',
-      db.collection('reparaciones').doc(id)
+      db
+        .collection('users')
+        .doc(getters['currentUser'].uid)
+        .collection('clientes')
     )
   }),
-  saveCliente: (context, payload) => {
-    return db.collection('clientes').add(payload)
+  fetchClientesById: firestoreAction(({ bindFirestoreRef, getters }, id) => {
+    return bindFirestoreRef(
+      'clientes',
+      db
+        .collection('users')
+        .doc(getters['currentUser'].uid)
+        .collection('reparaciones')
+        .doc(id)
+    )
+  }),
+  saveCliente: ({ getters }, payload) => {
+    return db
+      .collection('users')
+      .doc(getters['currentUser'].uid)
+      .collection('clientes')
+      .add(payload)
   },
-  updateCliente: (context, payload: ClienteData) => {
+  updateCliente: ({ getters }, payload: ClienteData) => {
     const reparaciones = payload.reparaciones
     return db
+      .collection('users')
+      .doc(getters['currentUser'].uid)
       .collection('clientes')
       .doc(payload.id)
       .update({
         ...payload,
         reparaciones: reparaciones?.map(rep =>
-          db.collection('reparaciones').doc(rep.id)
+          db
+            .collection('users')
+            .doc(getters['currentUser'].uid)
+            .collection('reparaciones')
+            .doc(rep.id)
         )
       })
   }

@@ -97,7 +97,9 @@ export default class RepairItem extends Vue {
       })
   }
   deleteReparacion(): void {
-    db.collection('reparaciones')
+    db.collection('users')
+      .doc(this.$store.getters['currentUser'].uid)
+      .collection('reparaciones')
       .doc(this.$route.params.id)
       .delete()
       .then(() => {

@@ -14,7 +14,8 @@
     ]
   },
   "firestore": {
-    "indexes": "firestore.indexes.json"
+    "indexes": "firestore.indexes.json",
+    "rules": "firestore.rules"
   },
   "functions": {
     "predeploy": [

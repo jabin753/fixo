@@ -30,8 +30,13 @@ import { db } from '@/plugins/firebase'
     prop: 'deviceBrand',
     event: 'change'
   },
-  firestore: {
-    deviceBrands: db.collection('marcaDispositivo')
+  firestore() {
+    return {
+      deviceBrands: db
+        .collection('users')
+        .doc(this.$store.getters['currentUser'].uid)
+        .collection('marcaDispositivo')
+    }
   },
   props: {
     rules: {
@@ -54,8 +59,9 @@ export default class VAutocompleteDeviceType extends Vue {
 
   newBrand() {
     this.loading = true
-
-    db.collection('marcaDispositivo')
+    db.collection('users')
+      .doc(this.$store.getters['currentUser'].uid)
+      .collection('marcaDispositivo')
       .add({ marca: this.inputField })
       .then(() => {
         this.loading = false
