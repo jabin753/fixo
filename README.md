@@ -1,6 +1,6 @@
 # Fixo
 
-Demo: https://fixo.jjabin.com
+Demo: https://updownpv.web.app/
 
 ## Project setup
 ```
